@@ -1,0 +1,4036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio TFG · Liderazgo Formal e Informal y Cohesión (U14 Preferente)</title>
+  <style>
+    /* ==========================================================================
+       PALETA INSTITUCIONAL CLUB ATLÈTIC SEGRE (ROJO · NEGRO · BLANCO)
+       100% CSS NATIVO · CERO DEPENDENCIAS EXTERNAS
+       ========================================================================== */
+    :root {
+      --segre-black: #090d16;
+      --segre-black-soft: #18181b;
+      --segre-red: #dc2626;
+      --segre-red-hover: #b91c1c;
+      --segre-red-dark: #991b1b;
+      --segre-red-tint: #fef2f2;
+      --segre-red-border: #fecaca;
+      --segre-white: #ffffff;
+      --segre-canvas: #f4f4f5;
+      --segre-subtle: #fafafa;
+      --segre-border: #e4e4e7;
+      --segre-border-strong: #d4d4d8;
+      --segre-text: #090d16;
+      --segre-text-secondary: #3f3f46;
+      --segre-text-muted: #71717a;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-xs: 0 1px 2px rgba(9, 13, 22, 0.06);
+      --shadow-sm: 0 4px 14px rgba(9, 13, 22, 0.08);
+      --shadow-lg: 0 20px 44px rgba(9, 13, 22, 0.22);
+
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background-color: var(--segre-canvas);
+      color: var(--segre-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Cabecera Oficial Atlètic Segre */
+    .app-header {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      border-bottom: 4px solid var(--segre-red);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-title {
+      margin: 5px 0 0 0;
+      font-size: 1.06rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--segre-white);
+    }
+
+    .brand-sub {
+      margin: 2px 0 0 0;
+      font-size: 0.77rem;
+      color: #d4d4d8;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.69rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .pill-red {
+      background-color: var(--segre-red);
+      color: var(--segre-white);
+    }
+
+    .pill-black {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      border: 1px solid #3f3f46;
+    }
+
+    .pill-white-outline {
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      border: 1.5px solid var(--segre-black);
+    }
+
+    .pill-neutral {
+      background-color: var(--segre-canvas);
+      color: var(--segre-black);
+      border: 1px solid var(--segre-border-strong);
+    }
+
+    /* Barra de Navegación (6 Pestañas) */
+    .nav-bar {
+      background-color: var(--segre-white);
+      border-bottom: 1.5px solid var(--segre-border);
+      overflow-x: auto;
+    }
+
+    .nav-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 9px 20px;
+      display: flex;
+      gap: 6px;
+      min-width: max-content;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: 1.5px solid transparent;
+      background: transparent;
+      color: var(--segre-text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--segre-canvas);
+      color: var(--segre-black);
+    }
+
+    .tab-btn.active {
+      background-color: var(--segre-red);
+      color: var(--segre-white);
+      border-color: var(--segre-red);
+    }
+
+    /* Contenedor y Rejillas */
+    .main-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px 20px 68px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card {
+      background-color: var(--segre-white);
+      border: 1px solid var(--segre-border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--segre-border);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.04rem;
+      font-weight: 800;
+      color: var(--segre-black);
+    }
+
+    .card-subtitle {
+      margin: 4px 0 0 0;
+      font-size: 0.8rem;
+      color: var(--segre-text-muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 1000px) {
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Botones Estricto Rojo / Negro / Blanco */
+    .btn {
+      appearance: none;
+      border: 1.5px solid transparent;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 9px 15px;
+      min-height: 38px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.14s ease, color 0.14s ease, border-color 0.14s ease, transform 0.05s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-red {
+      background-color: var(--segre-red);
+      color: var(--segre-white);
+      border-color: var(--segre-red);
+    }
+
+    .btn-red:hover:not(:disabled) {
+      background-color: var(--segre-red-hover);
+      border-color: var(--segre-red-hover);
+    }
+
+    .btn-black {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      border-color: var(--segre-black);
+    }
+
+    .btn-black:hover:not(:disabled) {
+      background-color: var(--segre-black-soft);
+    }
+
+    .btn-outline-black {
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      border-color: var(--segre-black);
+    }
+
+    .btn-outline-black:hover:not(:disabled) {
+      background-color: var(--segre-canvas);
+    }
+
+    .btn-outline-red {
+      background-color: var(--segre-white);
+      color: var(--segre-red);
+      border-color: var(--segre-red);
+    }
+
+    .btn-outline-red:hover:not(:disabled) {
+      background-color: var(--segre-red-tint);
+    }
+
+    .btn-sm {
+      padding: 6px 11px;
+      min-height: 32px;
+      font-size: 0.75rem;
+    }
+
+    /* Campos de Formulario */
+    label.field-label {
+      display: block;
+      font-size: 0.71rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--segre-text-secondary);
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px 12px;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      color: var(--segre-black);
+      background-color: var(--segre-white);
+      border: 1.5px solid var(--segre-border-strong);
+      border-radius: var(--radius-sm);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--segre-black);
+      box-shadow: 0 0 0 3px rgba(9, 13, 22, 0.09);
+    }
+
+    /* Alertas Institucionales (Rojo / Negro / Zinc) */
+    .notice {
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      line-height: 1.48;
+      border: 1.5px solid;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .notice-red {
+      background-color: var(--segre-red-tint);
+      border-color: var(--segre-red-border);
+      color: var(--segre-red-dark);
+    }
+
+    .notice-black {
+      background-color: var(--segre-black);
+      border-color: var(--segre-black);
+      color: var(--segre-white);
+    }
+
+    .notice-zinc {
+      background-color: var(--segre-canvas);
+      border-color: var(--segre-border-strong);
+      color: var(--segre-black);
+    }
+
+    /* Tablas */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--segre-border);
+      border-radius: var(--radius-md);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 12px;
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--segre-border);
+      vertical-align: middle;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tbody tr:hover {
+      background-color: var(--segre-subtle);
+    }
+
+    .text-center { text-align: center !important; }
+    .font-bold { font-weight: 700; }
+    .font-black { font-weight: 800; }
+
+    /* Selector Global de Oleada */
+    .wave-strip {
+      background-color: var(--segre-white);
+      border: 1px solid var(--segre-border);
+      border-radius: var(--radius-lg);
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .wave-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wave-chip {
+      padding: 7px 13px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--segre-black);
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .wave-chip.active {
+      background-color: var(--segre-red);
+      color: var(--segre-white);
+      border-color: var(--segre-red);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ==========================================================================
+       ENCUESTA MÓVIL ANTI-CURIOSOS ("VOTADO" SUSTITUYE AL NOMBRE + "NINGUNO")
+       ========================================================================== */
+    .survey-shell {
+      max-width: 560px;
+      margin: 12px auto;
+      background-color: var(--segre-white);
+      border: 1.5px solid var(--segre-black);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .survey-top {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      padding: 18px 22px;
+      border-bottom: 3px solid var(--segre-red);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background-color: var(--segre-border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--segre-red);
+      transition: width 0.2s ease;
+    }
+
+    .ninguno-btn {
+      appearance: none;
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 14px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--segre-black);
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ninguno-btn.is-active {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+    }
+
+    .nomination-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    @media (max-width: 440px) {
+      .nomination-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Botón anti-miradas laterales: estilo uniforme blanco/negro y texto "VOTADO" en lugar del nombre */
+    .anti-peek-btn {
+      appearance: none;
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 14px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--segre-black);
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: none;
+    }
+
+    .anti-peek-btn:hover,
+    .anti-peek-btn:focus,
+    .anti-peek-btn.is-voted {
+      background-color: var(--segre-white);
+      border-color: var(--segre-black);
+      color: var(--segre-black);
+      box-shadow: none;
+    }
+
+    .anti-peek-btn.is-voted {
+      letter-spacing: 0.08em;
+      font-weight: 800;
+    }
+
+    .likert-row {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 5px;
+    }
+
+    .likert-btn {
+      appearance: none;
+      min-height: 44px;
+      padding: 10px 0;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--segre-black);
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .likert-btn.selected {
+      background-color: var(--segre-red);
+      color: var(--segre-white);
+      border-color: var(--segre-red);
+    }
+
+    .optout-btn {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: 1.5px dashed var(--segre-black);
+      background-color: var(--segre-white);
+      color: var(--segre-black);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .optout-btn.selected {
+      background-color: var(--segre-black);
+      color: var(--segre-white);
+      border-style: solid;
+    }
+
+    /* Sociograma SVG */
+    .sociogram-box {
+      border: 1px solid var(--segre-border);
+      border-radius: var(--radius-md);
+      background-color: var(--segre-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    /* Toast & Modal */
+    .toast-banner {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      max-width: 450px;
+      z-index: 100;
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      color: var(--segre-white);
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1.5px solid var(--segre-white);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(9, 13, 22, 0.72);
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-dialog {
+      background-color: var(--segre-white);
+      border-radius: var(--radius-lg);
+      max-width: 490px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      border: 2px solid var(--segre-black);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    /* ==========================================================================
+       1. CONSTANTES DEL ESTUDIO TFG (CLUB ATLÈTIC SEGRE · U14 PREFERENTE)
+       ========================================================================== */
+    const STORAGE_KEY = "tfg_u14_ars_segre_v3";
+    const MAX_PLAYERS = 50;
+    const MONTE_CARLO_SEED = 20261127;
+    const MONTE_CARLO_ITER = 4000;
+
+    const DEFAULT_APP_CONFIG = {
+      title: "Evolución del Liderazgo Formal e Informal y su Relación con la Cohesión de Equipo",
+      subtitle: "INEFC Lleida · Estudio Longitudinal mediante ARS (Infantil U14 Preferente)",
+      clubBadge: "CLUB ATLÈTIC SEGRE · INFANTIL U14 PREFERENTE (G3)"
+    };
+
+    // Plantilla pre-cargada (N=18) del Club Atlètic Segre Infantil U14 Preferente
+    const INITIAL_SQUAD = [
+      { id: "P01", fullName: "Joan Marc Romero Zapater", displayName: "Joan Marc", dorsal: "", dob: "2013-06-16", captainRank: 0, active: true },
+      { id: "P02", fullName: "Ferran Armada Vargas", displayName: "Ferran", dorsal: "", dob: "2013-10-28", captainRank: 0, active: true },
+      { id: "P03", fullName: "Abdou Ndiaye", displayName: "Abdou", dorsal: "", dob: "2013-03-19", captainRank: 0, active: true },
+      { id: "P04", fullName: "Axel González Alba", displayName: "Axel", dorsal: "", dob: "2013-07-01", captainRank: 0, active: true },
+      { id: "P05", fullName: "Dramane Soumare", displayName: "Dramane", dorsal: "", dob: "2013-10-06", captainRank: 0, active: true },
+      { id: "P06", fullName: "Biel Bringué Iglesias", displayName: "Biel", dorsal: "", dob: "2013-02-17", captainRank: 0, active: true },
+      { id: "P07", fullName: "Goran Freixes Ivanov", displayName: "Goran", dorsal: "", dob: "2013-08-18", captainRank: 0, active: true },
+      { id: "P08", fullName: "Oriol Bach Bayo", displayName: "Oriol", dorsal: "", dob: "2013-01-18", captainRank: 0, active: true },
+      { id: "P09", fullName: "Roger Creus Martin", displayName: "Roger", dorsal: "", dob: "2013-04-11", captainRank: 0, active: true },
+      { id: "P10", fullName: "Luca Mariani De Frutos", displayName: "Luca", dorsal: "", dob: "2013-12-27", captainRank: 0, active: true },
+      { id: "P11", fullName: "Eric Verdés Plensa", displayName: "Eric", dorsal: "", dob: "2013-07-19", captainRank: 0, active: true },
+      { id: "P12", fullName: "Denís Jiménez Monteil", displayName: "Denís", dorsal: "", dob: "2013-11-23", captainRank: 0, active: true },
+      { id: "P13", fullName: "Jan Pedrol Ibañez", displayName: "Jan", dorsal: "", dob: "2013-02-28", captainRank: 0, active: true },
+      { id: "P14", fullName: "Mamadou Diawo Barry Barry", displayName: "Mamadou", dorsal: "", dob: "2013-02-28", captainRank: 0, active: true },
+      { id: "P15", fullName: "Pablo Mateos Moreu", displayName: "Pablo", dorsal: "", dob: "2013-03-22", captainRank: 0, active: true },
+      { id: "P16", fullName: "Marc Prats Balcells", displayName: "Marc", dorsal: "", dob: "2013-07-11", captainRank: 0, active: true },
+      { id: "P17", fullName: "Danilo Gabriel Alves Mareco", displayName: "Danilo", dorsal: "", dob: "2013-03-06", captainRank: 0, active: true },
+      { id: "P18", fullName: "Vamba Kouruma", displayName: "Vamba", dorsal: "", dob: "2013-05-01", captainRank: 0, active: true }
+    ];
+
+    // Dimensiones del Sociograma ARS (preguntas literales del TFG, máx. 3 no forzado)
+    const ARS_DIMENSIONS = [
+      {
+        key: "task",
+        label: "Liderazgo de Tarea",
+        shortLabel: "Tarea",
+        prompt: "¿A qué compañeros (máximo 3) elegirías para que te ayuden a organizarte, resolver dudas tácticas o liderar al equipo durante un partido difícil?"
+      },
+      {
+        key: "motivational",
+        label: "Liderazgo Motivacional",
+        shortLabel: "Motivacional",
+        prompt: "¿Qué compañeros (máximo 3) son los que más te animan, te dan energía y evitan que el equipo se venga abajo ante la adversidad?"
+      },
+      {
+        key: "social",
+        label: "Liderazgo Social",
+        shortLabel: "Social",
+        prompt: "¿A qué compañeros (máximo 3) acudirías o quiénes crees que son los mejores para integrar a los nuevos, mediar en discusiones y mantener un clima de respeto, confianza y unión en el vestuario?"
+      }
+    ];
+
+    // YSEQ-S (Validación española López-Gajardo et al., 2022):
+    // Ítems 1-8 Cohesión de Tarea | Ítems 9-10 Espurios de control | Ítems 11-18 Cohesión Social
+    const YSEQ_ITEMS = [
+      { id: 1, sub: "task", text: "Todos compartimos el mismo compromiso con los objetivos de nuestro equipo." },
+      { id: 2, sub: "task", text: "Como equipo, estamos muy unidos cuando competimos." },
+      { id: 3, sub: "task", text: "Me gusta la forma en la que trabajamos juntos como equipo." },
+      { id: 4, sub: "task", text: "Trabajamos bien juntos como equipo." },
+      { id: 5, sub: "task", text: "Todos en el equipo estamos de acuerdo en lo que queremos conseguir." },
+      { id: 6, sub: "task", text: "Nos apoyamos mutuamente durante los entrenamientos y los partidos." },
+      { id: 7, sub: "task", text: "Nuestro equipo está unido para conseguir el éxito." },
+      { id: 8, sub: "task", text: "Cada jugador es responsable de ayudar al equipo a rendir mejor." },
+      { id: 9, sub: "spurious", text: "No me llevo bien con los miembros de mi equipo." },
+      { id: 10, sub: "spurious", text: "Nuestro equipo no trabaja bien junto." },
+      { id: 11, sub: "social", text: "Paso tiempo con mis compañeros de equipo fuera de los entrenamientos y partidos." },
+      { id: 12, sub: "social", text: "Mis compañeros de equipo son buenos amigos míos." },
+      { id: 13, sub: "social", text: "Hacemos cosas juntos como equipo fuera del fútbol." },
+      { id: 14, sub: "social", text: "Nos gusta estar juntos fuera de nuestro deporte." },
+      { id: 15, sub: "social", text: "Me gusta pasar tiempo con mis compañeros de equipo antes y después de entrenar o jugar." },
+      { id: 16, sub: "social", text: "Algunos de mis mejores amigos están en este equipo." },
+      { id: 17, sub: "social", text: "Para mí, este equipo es uno de mis grupos de amigos más importantes." },
+      { id: 18, sub: "social", text: "Los jugadores de este equipo se llevan bien personalmente." }
+    ];
+
+    const ALL_CODE_POOL = Array.from({ length: MAX_PLAYERS }, (_, i) => `J${String(i + 1).padStart(2, "0")}`);
+
+    /* ==========================================================================
+       2. GENERADOR OFFLINE PURO EN JS DE CÓDIGOS QR ISO/IEC 18004 EN SVG (V1-V9)
+       ========================================================================== */
+    const OfflineQR = (() => {
+      const VERSIONS = [
+        null,
+        { size: 21, dataBytes: 19, blocks: [[1, 19, 7]] },
+        { size: 25, dataBytes: 34, blocks: [[1, 34, 10]] },
+        { size: 29, dataBytes: 55, blocks: [[1, 55, 15]] },
+        { size: 33, dataBytes: 80, blocks: [[1, 80, 20]] },
+        { size: 37, dataBytes: 108, blocks: [[1, 108, 26]] },
+        { size: 41, dataBytes: 136, blocks: [[2, 68, 18]] },
+        { size: 45, dataBytes: 156, blocks: [[2, 78, 20]] },
+        { size: 49, dataBytes: 194, blocks: [[2, 97, 24]] },
+        { size: 53, dataBytes: 232, blocks: [[2, 116, 30]] }
+      ];
+
+      const ALIGN_COORDS = [
+        null,
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46]
+      ];
+
+      const EXP = new Uint8Array(512);
+      const LOG = new Uint8Array(256);
+      let val = 1;
+      for (let i = 0; i < 255; i++) {
+        EXP[i] = val;
+        LOG[val] = i;
+        val = (val << 1) ^ (val & 0x80 ? 0x11d : 0);
+      }
+      for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+
+      function gfMul(a, b) {
+        if (a === 0 || b === 0) return 0;
+        return EXP[LOG[a] + LOG[b]];
+      }
+
+      function rsGenPoly(ecLen) {
+        let poly = [1];
+        for (let i = 0; i < ecLen; i++) {
+          const next = new Array(poly.length + 1).fill(0);
+          for (let j = 0; j < poly.length; j++) {
+            next[j] ^= poly[j];
+            next[j + 1] ^= gfMul(poly[j], EXP[i]);
+          }
+          poly = next;
+        }
+        return poly;
+      }
+
+      function rsCompute(data, ecLen) {
+        const gen = rsGenPoly(ecLen);
+        const rem = new Array(ecLen).fill(0);
+        for (let i = 0; i < data.length; i++) {
+          const factor = data[i] ^ rem[0];
+          rem.shift();
+          rem.push(0);
+          for (let j = 0; j < ecLen; j++) {
+            rem[j] ^= gfMul(gen[j + 1], factor);
+          }
+        }
+        return rem;
+      }
+
+      function buildMatrix(text) {
+        const utf8 = Array.from(new TextEncoder().encode(text));
+        let ver = 1;
+        while (ver <= 9) {
+          if (VERSIONS[ver].dataBytes >= utf8.length + 2) break;
+          ver++;
+        }
+        if (ver > 9) {
+          ver = 9;
+          utf8.length = VERSIONS[9].dataBytes - 2;
+        }
+
+        const spec = VERSIONS[ver];
+        const bits = [];
+        const pushBits = (num, len) => {
+          for (let i = len - 1; i >= 0; i--) bits.push((num >>> i) & 1);
+        };
+
+        pushBits(0b0100, 4);
+        pushBits(utf8.length, 8);
+        utf8.forEach(b => pushBits(b, 8));
+        pushBits(0, Math.min(4, spec.dataBytes * 8 - bits.length));
+        while (bits.length % 8 !== 0) bits.push(0);
+
+        const codewords = [];
+        for (let i = 0; i < bits.length; i += 8) {
+          let byte = 0;
+          for (let j = 0; j < 8; j++) byte = (byte << 1) | bits[i + j];
+          codewords.push(byte);
+        }
+        const pad = [0xec, 0x11];
+        let pIdx = 0;
+        while (codewords.length < spec.dataBytes) {
+          codewords.push(pad[pIdx % 2]);
+          pIdx++;
+        }
+
+        const dataBlocks = [];
+        const ecBlocks = [];
+        let cursor = 0;
+        spec.blocks.forEach(([count, dLen, eLen]) => {
+          for (let b = 0; b < count; b++) {
+            const slice = codewords.slice(cursor, cursor + dLen);
+            cursor += dLen;
+            dataBlocks.push(slice);
+            ecBlocks.push(rsCompute(slice, eLen));
+          }
+        });
+
+        const interleaved = [];
+        const maxDataLen = Math.max(...dataBlocks.map(b => b.length));
+        for (let i = 0; i < maxDataLen; i++) {
+          dataBlocks.forEach(b => { if (i < b.length) interleaved.push(b[i]); });
+        }
+        const maxEcLen = Math.max(...ecBlocks.map(b => b.length));
+        for (let i = 0; i < maxEcLen; i++) {
+          ecBlocks.forEach(b => { if (i < b.length) interleaved.push(b[i]); });
+        }
+
+        const n = spec.size;
+        const mod = Array.from({ length: n }, () => new Array(n).fill(0));
+        const isFunc = Array.from({ length: n }, () => new Array(n).fill(false));
+        const setFunc = (r, c, v) => {
+          if (r >= 0 && r < n && c >= 0 && c < n) {
+            mod[r][c] = v ? 1 : 0;
+            isFunc[r][c] = true;
+          }
+        };
+
+        const placeFinder = (r0, c0) => {
+          for (let dr = -1; dr <= 7; dr++) {
+            for (let dc = -1; dc <= 7; dc++) {
+              const inBox = dr >= 0 && dr <= 6 && dc >= 0 && dc <= 6;
+              const border = dr === 0 || dr === 6 || dc === 0 || dc === 6;
+              const core = dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4;
+              setFunc(r0 + dr, c0 + dc, inBox && (border || core));
+            }
+          }
+        };
+        placeFinder(0, 0);
+        placeFinder(0, n - 7);
+        placeFinder(n - 7, 0);
+
+        const aLocs = ALIGN_COORDS[ver];
+        for (let i = 0; i < aLocs.length; i++) {
+          for (let j = 0; j < aLocs.length; j++) {
+            const r = aLocs[i], c = aLocs[j];
+            if (isFunc[r][c]) continue;
+            for (let dr = -2; dr <= 2; dr++) {
+              for (let dc = -2; dc <= 2; dc++) {
+                const dark = Math.abs(dr) === 2 || Math.abs(dc) === 2 || (dr === 0 && dc === 0);
+                setFunc(r + dr, c + dc, dark);
+              }
+            }
+          }
+        }
+
+        for (let i = 8; i < n - 8; i++) {
+          if (!isFunc[6][i]) setFunc(6, i, i % 2 === 0);
+          if (!isFunc[i][6]) setFunc(i, 6, i % 2 === 0);
+        }
+
+        setFunc(n - 8, 8, 1);
+        for (let i = 0; i < 9; i++) {
+          if (!isFunc[8][i]) setFunc(8, i, 0);
+          if (!isFunc[i][8]) setFunc(i, 8, 0);
+        }
+        for (let i = 0; i < 8; i++) {
+          if (!isFunc[8][n - 1 - i]) setFunc(8, n - 1 - i, 0);
+          if (!isFunc[n - 1 - i][8]) setFunc(n - 1 - i, 8, 0);
+        }
+
+        if (ver >= 7) {
+          const VER_BITS = { 7: 0x07c94, 8: 0x085bc, 9: 0x09a99 };
+          const vBits = VER_BITS[ver];
+          for (let i = 0; i < 18; i++) {
+            const bit = (vBits >>> i) & 1;
+            const a = Math.floor(i / 3);
+            const b = n - 11 + (i % 3);
+            setFunc(a, b, bit);
+            setFunc(b, a, bit);
+          }
+        }
+
+        const bitStream = [];
+        interleaved.forEach(byte => {
+          for (let b = 7; b >= 0; b--) bitStream.push((byte >>> b) & 1);
+        });
+
+        let bitIdx = 0;
+        let upward = true;
+        for (let right = n - 1; right >= 1; right -= 2) {
+          if (right === 6) right = 5;
+          for (let step = 0; step < n; step++) {
+            const r = upward ? n - 1 - step : step;
+            for (let dx = 0; dx < 2; dx++) {
+              const c = right - dx;
+              if (!isFunc[r][c]) {
+                const raw = bitIdx < bitStream.length ? bitStream[bitIdx++] : 0;
+                mod[r][c] = raw ^ ((r + c) % 2 === 0 ? 1 : 0);
+              }
+            }
+          }
+          upward = !upward;
+        }
+
+        const fmt = 0x77c4;
+        const fmtBits = [];
+        for (let i = 14; i >= 0; i--) fmtBits.push((fmt >>> i) & 1);
+        const c1 = [
+          [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 7], [8, 8],
+          [7, 8], [5, 8], [4, 8], [3, 8], [2, 8], [1, 8], [0, 8]
+        ];
+        const c2 = [
+          [n - 1, 8], [n - 2, 8], [n - 3, 8], [n - 4, 8], [n - 5, 8], [n - 6, 8], [n - 7, 8],
+          [8, n - 8], [8, n - 7], [8, n - 6], [8, n - 5], [8, n - 4], [8, n - 3], [8, n - 2], [8, n - 1]
+        ];
+        for (let i = 0; i < 15; i++) {
+          mod[c1[i][0]][c1[i][1]] = fmtBits[i];
+          mod[c2[i][0]][c2[i][1]] = fmtBits[i];
+        }
+
+        return mod;
+      }
+
+      return {
+        toSVG(text, pxSize = 158) {
+          const matrix = buildMatrix(text);
+          const n = matrix.length;
+          const quiet = 3;
+          const total = n + quiet * 2;
+          let rects = "";
+          for (let r = 0; r < n; r++) {
+            for (let c = 0; c < n; c++) {
+              if (matrix[r][c] === 1) {
+                rects += `<rect x="${c + quiet}" y="${r + quiet}" width="1" height="1" />`;
+              }
+            }
+          }
+          return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" width="${pxSize}" height="${pxSize}" shape-rendering="crispEdges" style="background:#ffffff;border:1.5px solid #090d16;border-radius:12px;display:block"><g fill="#090d16">${rects}</g></svg>`;
+        }
+      };
+    })();
+
+    /* ==========================================================================
+       3. UTILIDADES CRIPTOGRÁFICAS Y SHUFFLE NO SECUENCIAL
+       ========================================================================== */
+    function cryptoShuffle(list) {
+      const arr = [...list];
+      const rnd = new Uint32Array(arr.length);
+      if (window.crypto && window.crypto.getRandomValues) {
+        window.crypto.getRandomValues(rnd);
+      } else {
+        let s = MONTE_CARLO_SEED;
+        for (let i = 0; i < arr.length; i++) {
+          s = (s * 1664525 + 1013904223) >>> 0;
+          rnd[i] = s;
+        }
+      }
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = rnd[i] % (i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    async function computeSHA256(text) {
+      if (window.crypto && window.crypto.subtle) {
+        const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+      }
+      let h1 = 0x811c9dc5, h2 = 0x01000193;
+      for (let i = 0; i < text.length; i++) {
+        h1 ^= text.charCodeAt(i);
+        h1 = Math.imul(h1, 0x01000193);
+        h2 ^= text.charCodeAt(i) + i;
+        h2 = Math.imul(h2, 0x85ebca6b);
+      }
+      return `${(h1 >>> 0).toString(16).padStart(8, "0")}${(h2 >>> 0).toString(16).padStart(8, "0")}`;
+    }
+
+    function encodeTokenBase64Url(obj) {
+      const jsonStr = JSON.stringify(obj);
+      const utf8Bytes = new TextEncoder().encode(jsonStr);
+      let bin = "";
+      for (let i = 0; i < utf8Bytes.length; i++) bin += String.fromCharCode(utf8Bytes[i]);
+      return "TFG1_" + btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function decodeTokenBase64Url(rawToken) {
+      const clean = rawToken.trim().replace(/^TFG1_/, "").replace(/-/g, "+").replace(/_/g, "/");
+      const bin = atob(clean);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return JSON.parse(new TextDecoder().decode(bytes));
+    }
+
+    /* ==========================================================================
+       4. MOTOR ESTADÍSTICO REPRODUCIBLE (MULBERRY32, MID-RANK, WILCOXON, BH-FDR)
+       ========================================================================== */
+    const StatsEngine = {
+      createMulberry32(seed = MONTE_CARLO_SEED) {
+        let a = seed >>> 0;
+        return function () {
+          let t = (a += 0x6d2b79f5);
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      },
+
+      midRanksAsc(arr) {
+        const indexed = arr.map((v, i) => ({ v, i })).sort((a, b) => a.v - b.v);
+        const ranks = new Array(arr.length);
+        let i = 0;
+        while (i < indexed.length) {
+          let j = i;
+          while (j + 1 < indexed.length && indexed[j + 1].v === indexed[i].v) j++;
+          const mid = (i + j) / 2 + 1;
+          for (let k = i; k <= j; k++) ranks[indexed[k].i] = mid;
+          i = j + 1;
+        }
+        return ranks;
+      },
+
+      midRanksDesc(arr) {
+        const indexed = arr.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v);
+        const ranks = new Array(arr.length);
+        let i = 0;
+        while (i < indexed.length) {
+          let j = i;
+          while (j + 1 < indexed.length && indexed[j + 1].v === indexed[i].v) j++;
+          const mid = (i + j) / 2 + 1;
+          for (let k = i; k <= j; k++) ranks[indexed[k].i] = mid;
+          i = j + 1;
+        }
+        return ranks;
+      },
+
+      pearson(x, y) {
+        const n = x.length;
+        if (n < 3) return 0;
+        const mx = x.reduce((a, b) => a + b, 0) / n;
+        const my = y.reduce((a, b) => a + b, 0) / n;
+        let num = 0, dx = 0, dy = 0;
+        for (let i = 0; i < n; i++) {
+          num += (x[i] - mx) * (y[i] - my);
+          dx += (x[i] - mx) ** 2;
+          dy += (y[i] - my) ** 2;
+        }
+        return dx * dy === 0 ? 0 : num / Math.sqrt(dx * dy);
+      },
+
+      spearmanMonteCarlo(x, y, iterations = MONTE_CARLO_ITER, seed = MONTE_CARLO_SEED) {
+        const n = x.length;
+        if (n < 4) return { rho: null, p: null, n };
+        const rx = this.midRanksAsc(x);
+        const ry = this.midRanksAsc(y);
+        const rho = this.pearson(rx, ry);
+        const absRho = Math.abs(rho);
+
+        const rng = this.createMulberry32(seed);
+        const perm = [...ry];
+        let extreme = 0;
+        for (let iter = 0; iter < iterations; iter++) {
+          for (let i = perm.length - 1; i > 0; i--) {
+            const j = Math.floor(rng() * (i + 1));
+            [perm[i], perm[j]] = [perm[j], perm[i]];
+          }
+          if (Math.abs(this.pearson(rx, perm)) >= absRho - 1e-12) {
+            extreme++;
+          }
+        }
+        return {
+          rho: Math.round(rho * 1000) / 1000,
+          p: Math.round(((extreme + 1) / (iterations + 1)) * 10000) / 10000,
+          n
+        };
+      },
+
+      wilcoxonSignedRankTieCorrected(a, b) {
+        const diffs = [];
+        for (let i = 0; i < a.length; i++) {
+          const d = b[i] - a[i];
+          if (Math.abs(d) > 1e-9) diffs.push(d);
+        }
+        const n = diffs.length;
+        if (n === 0) return { W: 0, Z: 0, p: 1, r: 0, nEff: 0 };
+
+        const absVals = diffs.map(Math.abs);
+        const ranks = this.midRanksAsc(absVals);
+        let wPlus = 0, wMinus = 0;
+        diffs.forEach((d, idx) => {
+          if (d > 0) wPlus += ranks[idx];
+          else wMinus += ranks[idx];
+        });
+
+        const sortedAbs = [...absVals].sort((x, y) => x - y);
+        let tieTerm = 0;
+        let idx = 0;
+        while (idx < sortedAbs.length) {
+          let end = idx;
+          while (end + 1 < sortedAbs.length && Math.abs(sortedAbs[end + 1] - sortedAbs[idx]) < 1e-9) {
+            end++;
+          }
+          const t = end - idx + 1;
+          if (t > 1) tieTerm += (t ** 3 - t);
+          idx = end + 1;
+        }
+
+        const W = Math.min(wPlus, wMinus);
+        const meanW = (n * (n + 1)) / 4;
+        const varW = (n * (n + 1) * (2 * n + 1) - 0.5 * tieTerm) / 24;
+        const sdW = varW > 0 ? Math.sqrt(varW) : 0;
+        const Z = sdW === 0 ? 0 : (wPlus - meanW) / sdW;
+
+        const erf = (zVal) => {
+          const sign = zVal >= 0 ? 1 : -1;
+          const x = Math.abs(zVal);
+          const t = 1 / (1 + 0.3275911 * x);
+          const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+          return sign * y;
+        };
+
+        const p = Math.max(0.0001, Math.min(1, 2 * (1 - 0.5 * (1 + erf(Math.abs(Z) / Math.SQRT2)))));
+        const r = Math.abs(Z) / Math.sqrt(n);
+
+        return {
+          W: Math.round(W * 10) / 10,
+          Z: Math.round(Z * 100) / 100,
+          p: Math.round(p * 10000) / 10000,
+          r: Math.round(r * 100) / 100,
+          nEff: n
+        };
+      },
+
+      benjaminiHochberg(pValues) {
+        const m = pValues.length;
+        if (m === 0) return [];
+        const indexed = pValues.map((p, i) => ({ p, i })).sort((a, b) => a.p - b.p);
+        const q = new Array(m);
+        let prev = 1;
+        for (let k = m - 1; k >= 0; k--) {
+          const adj = Math.min(prev, (indexed[k].p * m) / (k + 1));
+          prev = adj;
+          q[indexed[k].i] = Math.round(adj * 10000) / 10000;
+        }
+        return q;
+      },
+
+      jaccard(arrA, arrB) {
+        const a = new Set(arrA);
+        const b = new Set(arrB);
+        if (a.size === 0 && b.size === 0) return 1;
+        let inter = 0;
+        a.forEach(x => { if (b.has(x)) inter++; });
+        const union = new Set([...a, ...b]).size;
+        return union === 0 ? 1 : Math.round((inter / union) * 1000) / 1000;
+      },
+
+      cronbachAlphaCompleteCases(completeRows) {
+        if (!completeRows || completeRows.length < 3) return null;
+        const k = completeRows[0].length;
+        if (k < 2) return null;
+        const itemVars = [];
+        for (let j = 0; j < k; j++) {
+          const col = completeRows.map(r => r[j]);
+          const mean = col.reduce((a, b) => a + b, 0) / col.length;
+          const v = col.reduce((s, val) => s + (val - mean) ** 2, 0) / (col.length - 1);
+          itemVars.push(v);
+        }
+        const totals = completeRows.map(r => r.reduce((a, b) => a + b, 0));
+        const meanTot = totals.reduce((a, b) => a + b, 0) / totals.length;
+        const varTot = totals.reduce((s, val) => s + (val - meanTot) ** 2, 0) / (totals.length - 1);
+        if (varTot === 0) return 0;
+        const sumItemVar = itemVars.reduce((a, b) => a + b, 0);
+        return Math.round(((k / (k - 1)) * (1 - sumItemVar / varTot)) * 1000) / 1000;
+      },
+
+      meanAndSD(vals) {
+        if (!vals || vals.length === 0) return { mean: null, sd: null, n: 0 };
+        const n = vals.length;
+        const mean = vals.reduce((a, b) => a + b, 0) / n;
+        const sd = n > 1 ? Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / (n - 1)) : 0;
+        return {
+          mean: Math.round(mean * 100) / 100,
+          sd: Math.round(sd * 100) / 100,
+          n
+        };
+      }
+    };
+
+    /* ==========================================================================
+       5. ESTADO GLOBAL, MODO MÓVIL (?modo=encuesta) Y PERSISTENCIA LOCAL
+       ========================================================================== */
+    const urlParams = new URLSearchParams(window.location.search);
+    const isMobileUrlMode = urlParams.get("modo") === "encuesta";
+    const initialWaveParam = urlParams.get("w") || urlParams.get("oleada") || "T1";
+
+    function createDefaultStudyData() {
+      const shuffledCodes = cryptoShuffle(ALL_CODE_POOL).slice(0, INITIAL_SQUAD.length);
+      const players = INITIAL_SQUAD.map((p, idx) => ({
+        ...p,
+        code: shuffledCodes[idx]
+      }));
+
+      return {
+        config: { ...DEFAULT_APP_CONFIG },
+        players,
+        retiredCodes: [],
+        envelopeOpened: false,
+        expandedConsentVerified: false,
+        nextWaveSeq: 4,
+        waves: [
+          {
+            id: "T1",
+            label: "Oleada T1 — Inicio Competitivo",
+            period: "Octubre 2026 · Post-Jornada 5",
+            status: "open",
+            coach1Blind: null,
+            coach2Blind: null,
+            responses: {},
+            ecological: {}
+          },
+          {
+            id: "T2",
+            label: "Oleada T2 — Ecuador de Temporada",
+            period: "Enero 2027 · Final 1.ª Vuelta",
+            status: "prep",
+            coach1Blind: null,
+            coach2Blind: null,
+            responses: {},
+            ecological: {}
+          },
+          {
+            id: "T3",
+            label: "Oleada T3 — Tramo Final",
+            period: "Abril 2027 · Recta Final Liga",
+            status: "prep",
+            coach1Blind: null,
+            coach2Blind: null,
+            responses: {},
+            ecological: {}
+          }
+        ]
+      };
+    }
+
+    function loadStudyState() {
+      if (isMobileUrlMode) {
+        return createDefaultStudyData();
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.players) && Array.isArray(parsed.waves)) {
+            parsed.config = { ...DEFAULT_APP_CONFIG, ...(parsed.config || {}) };
+            const allClosed = parsed.waves.length > 0 && parsed.waves.every(w => w.status === "closed");
+            if (!allClosed) parsed.envelopeOpened = false;
+            return parsed;
+          }
+        }
+      } catch (_) {}
+      return createDefaultStudyData();
+    }
+
+    const defaultBaseUrl = window.location.protocol.startsWith("http")
+      ? `${window.location.origin}${window.location.pathname}`
+      : "";
+
+    const AppState = {
+      data: loadStudyState(),
+      activeTab: isMobileUrlMode ? "survey" : "staff",
+      selectedWaveId: initialWaveParam,
+      compareWaveAId: "T1",
+      compareWaveBId: "T2",
+      selectedGraphNode: null,
+      qrBaseUrlInput: defaultBaseUrl,
+      kioskInAppMode: false,
+      configDraft: null,
+      coachDraft: {
+        coachNum: 1,
+        task: [],
+        motivational: [],
+        social: []
+      },
+      surveySession: {
+        waveId: initialWaveParam,
+        selectedPlayerId: "",
+        step: 0, // 0=nombre, 1=tarea, 2=motivacional, 3=social, 4..21=YSEQ 1..18, 22=completado
+        task: [],
+        taskNone: false,
+        motivational: [],
+        motivationalNone: false,
+        social: [],
+        socialNone: false,
+        yseq: {},
+        generatedToken: "",
+        receiptHash: "",
+        serverSynced: false
+      },
+      toast: null,
+      confirmDialog: null
+    };
+
+    function persistState() {
+      if (isMobileUrlMode) return;
+      try {
+        const allClosed = AppState.data.waves.length > 0 && AppState.data.waves.every(w => w.status === "closed");
+        if (!allClosed) AppState.data.envelopeOpened = false;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState.data));
+      } catch (_) {}
+    }
+
+    function showToast(msg, type = "black") {
+      AppState.toast = { msg, type };
+      render();
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        AppState.toast = null;
+        render();
+      }, 4800);
+    }
+
+    function openConfirm(title, message, onConfirm, confirmLabel = "Confirmar", isRed = true) {
+      AppState.confirmDialog = { title, message, onConfirm, confirmLabel, isRed };
+      render();
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function copyTextSafely(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (_) {}
+      document.body.removeChild(ta);
+    }
+
+    /* ==========================================================================
+       6. CÁLCULOS ARS, PSICOMETRÍA Y CONTRASTES H1–H4
+       ========================================================================== */
+    function getActiveWave() {
+      return AppState.data.waves.find(w => w.id === AppState.selectedWaveId) || AppState.data.waves[0];
+    }
+
+    function getActivePlayers() {
+      return AppState.data.players.filter(p => p.active);
+    }
+
+    function canOpenSealedEnvelope() {
+      return AppState.data.waves.length > 0 && AppState.data.waves.every(w => w.status === "closed");
+    }
+
+    function isEnvelopeOpen() {
+      return Boolean(AppState.data.envelopeOpened && canOpenSealedEnvelope());
+    }
+
+    function formatResearchNodeLabel(player, includeFullName = false) {
+      if (!isEnvelopeOpen()) return player.code;
+      const capTag = player.captainRank > 0 ? ` [C${player.captainRank}]` : "";
+      return includeFullName
+        ? `${player.code} · ${player.fullName}${capTag}`
+        : `${player.code} · ${player.displayName}${capTag}`;
+    }
+
+    function computeNetworkMetrics(wave) {
+      const activePlayers = getActivePlayers();
+      const activeCodes = activePlayers.map(p => p.code);
+      const responses = wave?.responses || {};
+      const respondentCodes = Object.keys(responses).filter(c => activeCodes.includes(c));
+      const nResp = respondentCodes.length;
+      const nActive = activeCodes.length;
+
+      const result = {};
+      ARS_DIMENSIONS.forEach(dim => {
+        const inDeg = Object.fromEntries(activeCodes.map(c => [c, 0]));
+        const outDeg = Object.fromEntries(activeCodes.map(c => [c, 0]));
+        const edges = [];
+
+        respondentCodes.forEach(fromCode => {
+          const targets = Array.isArray(responses[fromCode]?.[dim.key]) ? responses[fromCode][dim.key] : [];
+          targets.forEach((toCode, idx) => {
+            if (inDeg[toCode] !== undefined && toCode !== fromCode) {
+              inDeg[toCode] += 1;
+              outDeg[fromCode] += 1;
+              edges.push({ from: fromCode, to: toCode, order: idx + 1 });
+            }
+          });
+        });
+
+        const normIn = {};
+        activeCodes.forEach(c => {
+          const denom = respondentCodes.includes(c) ? nResp - 1 : nResp;
+          normIn[c] = denom > 0 ? Math.round((inDeg[c] / denom) * 10000) / 10000 : 0;
+        });
+
+        const valuesArr = activeCodes.map(c => normIn[c]);
+        const ranksArr = StatsEngine.midRanksDesc(valuesArr);
+        const rankMap = {};
+        const percentileMap = {};
+        activeCodes.forEach((c, idx) => {
+          rankMap[c] = ranksArr[idx];
+          percentileMap[c] = nActive > 0 ? Math.round(((nActive - ranksArr[idx] + 1) / nActive) * 100) : 0;
+        });
+
+        const uniqueSorted = [...new Set(valuesArr)].sort((a, b) => b - a);
+        const cutoff = uniqueSorted.length >= 3 ? uniqueSorted[2] : uniqueSorted[uniqueSorted.length - 1];
+        const top3Codes = cutoff > 0 ? activeCodes.filter(c => normIn[c] >= cutoff) : [];
+
+        const maxPossibleEdges = nResp * Math.max(0, nActive - 1);
+        const density = maxPossibleEdges > 0 ? Math.round((edges.length / maxPossibleEdges) * 1000) / 1000 : 0;
+        const maxNorm = valuesArr.length > 0 ? Math.max(...valuesArr) : 0;
+        const sumDiff = valuesArr.reduce((acc, v) => acc + (maxNorm - v), 0);
+        const centralization = nActive > 1 ? Math.round((sumDiff / (nActive - 1)) * 1000) / 1000 : 0;
+
+        result[dim.key] = {
+          inDeg,
+          outDeg,
+          normIn,
+          rankMap,
+          percentileMap,
+          top3Codes,
+          edges,
+          density,
+          centralization,
+          nResp,
+          nActive
+        };
+      });
+
+      return result;
+    }
+
+    function computeYSEQMetrics(wave) {
+      const responses = wave?.responses || {};
+      const taskIds = YSEQ_ITEMS.filter(i => i.sub === "task").map(i => i.id);
+      const socialIds = YSEQ_ITEMS.filter(i => i.sub === "social").map(i => i.id);
+
+      const perCode = {};
+      const validTaskMeans = [];
+      const validSocialMeans = [];
+      const completeTaskRows = [];
+      const completeSocialRows = [];
+      const spuriousAlerts = [];
+
+      Object.entries(responses).forEach(([code, resp]) => {
+        const yseq = resp.yseq || {};
+        const tVals = taskIds.map(id => yseq[id]).filter(v => typeof v === "number" && v >= 1 && v <= 9);
+        const sVals = socialIds.map(id => yseq[id]).filter(v => typeof v === "number" && v >= 1 && v <= 9);
+
+        const taskMean = tVals.length >= 6 ? Math.round((tVals.reduce((a, b) => a + b, 0) / tVals.length) * 100) / 100 : null;
+        const socialMean = sVals.length >= 6 ? Math.round((sVals.reduce((a, b) => a + b, 0) / sVals.length) * 100) / 100 : null;
+
+        if (taskMean !== null) validTaskMeans.push(taskMean);
+        if (socialMean !== null) validSocialMeans.push(socialMean);
+        if (tVals.length === 8) completeTaskRows.push(taskIds.map(id => yseq[id]));
+        if (sVals.length === 8) completeSocialRows.push(socialIds.map(id => yseq[id]));
+
+        const v9 = typeof yseq[9] === "number" ? yseq[9] : null;
+        const v10 = typeof yseq[10] === "number" ? yseq[10] : null;
+        const directVals = [...tVals, ...sVals];
+        const directMean = directVals.length > 0 ? directVals.reduce((a, b) => a + b, 0) / directVals.length : null;
+        const isAcquiescent = directMean !== null && directMean >= 6.5 && ((v9 !== null && v9 >= 6) || (v10 !== null && v10 >= 6));
+
+        if (isAcquiescent) {
+          spuriousAlerts.push({ code, directMean: Math.round(directMean * 100) / 100, v9, v10 });
+        }
+
+        perCode[code] = {
+          taskCount: tVals.length,
+          socialCount: sVals.length,
+          taskMean,
+          socialMean,
+          v9,
+          v10,
+          isAcquiescent
+        };
+      });
+
+      return {
+        perCode,
+        taskStats: StatsEngine.meanAndSD(validTaskMeans),
+        socialStats: StatsEngine.meanAndSD(validSocialMeans),
+        alphaTask: StatsEngine.cronbachAlphaCompleteCases(completeTaskRows),
+        nCompleteTask: completeTaskRows.length,
+        alphaSocial: StatsEngine.cronbachAlphaCompleteCases(completeSocialRows),
+        nCompleteSocial: completeSocialRows.length,
+        spuriousAlerts
+      };
+    }
+
+    /* ==========================================================================
+       7. EXPORTACIONES: SOCIOGRAMAS SVG/PNG, GEPHI GOLDEN STANDARD Y CSV/TSV
+       ========================================================================== */
+    function buildSociogramSVGString(wave, dimKey, netMetrics, selectedNode) {
+      const size = 440;
+      const cx = size / 2;
+      const cy = size / 2;
+      const radius = 150;
+      const activePlayers = getActivePlayers();
+      const dimNet = netMetrics[dimKey];
+      const maxNorm = Math.max(0.01, ...activePlayers.map(p => dimNet.normIn[p.code] || 0));
+      const open = isEnvelopeOpen();
+
+      const nodes = activePlayers.map((pl, idx) => {
+        const angle = (2 * Math.PI * idx) / Math.max(1, activePlayers.length) - Math.PI / 2;
+        const normVal = dimNet.normIn[pl.code] || 0;
+        return {
+          player: pl,
+          code: pl.code,
+          x: cx + radius * Math.cos(angle),
+          y: cy + radius * Math.sin(angle),
+          inDeg: dimNet.inDeg[pl.code] || 0,
+          normVal,
+          r: 13 + (normVal / maxNorm) * 10
+        };
+      });
+      const nodeMap = Object.fromEntries(nodes.map(n => [n.code, n]));
+
+      let edgesSVG = "";
+      dimNet.edges.forEach(e => {
+        const s = nodeMap[e.from];
+        const t = nodeMap[e.to];
+        if (!s || !t) return;
+        const isRelated = !selectedNode || e.from === selectedNode || e.to === selectedNode;
+        const isDirect = selectedNode && (e.from === selectedNode || e.to === selectedNode);
+        const dx = t.x - s.x;
+        const dy = t.y - s.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const ux = dx / dist;
+        const uy = dy / dist;
+        const x1 = s.x + ux * (s.r + 2);
+        const y1 = s.y + uy * (s.r + 2);
+        const x2 = t.x - ux * (t.r + 5);
+        const y2 = t.y - uy * (t.r + 5);
+        edgesSVG += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${isDirect ? "#dc2626" : "#52525b"}" stroke-width="${isDirect ? "2.2" : "1.15"}" stroke-opacity="${isRelated ? (isDirect ? "0.95" : "0.42") : "0.08"}" marker-end="url(#${isDirect ? `arr-red-${dimKey}` : `arr-blk-${dimKey}`})" />`;
+      });
+
+      let nodesSVG = "";
+      nodes.forEach(n => {
+        const isSel = selectedNode === n.code;
+        const isTop3 = dimNet.top3Codes.includes(n.code);
+        const dimmed = selectedNode && !isSel && !dimNet.edges.some(e => (e.from === selectedNode && e.to === n.code) || (e.to === selectedNode && e.from === n.code));
+        const isCap = open && n.player.captainRank > 0;
+        const bottomLabel = open
+          ? `${n.code} · ${n.player.displayName}${isCap ? ` [C${n.player.captainRank}]` : ""}`
+          : `In:${n.inDeg}`;
+
+        // Segre Black (#090d16) y Segre Red (#dc2626) sobre fondo blanco
+        const fill = isSel ? "#dc2626" : isTop3 ? "#090d16" : "#ffffff";
+        const stroke = isSel ? "#991b1b" : isTop3 ? "#dc2626" : "#090d16";
+        const textFill = isSel || isTop3 ? "#ffffff" : "#090d16";
+
+        nodesSVG += `
+          <g class="socio-node" data-code="${n.code}" style="cursor:pointer;opacity:${dimmed ? "0.22" : "1"}">
+            ${isCap ? `<circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${(n.r + 3.5).toFixed(1)}" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="3 2" />` : ""}
+            <circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${n.r.toFixed(1)}" fill="${fill}" stroke="${stroke}" stroke-width="${isTop3 || isSel ? "2.5" : "1.5"}" />
+            <text x="${n.x.toFixed(1)}" y="${(n.y + 3).toFixed(1)}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="800" fill="${textFill}">${n.code}</text>
+            <text x="${n.x.toFixed(1)}" y="${(n.y + n.r + 11).toFixed(1)}" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7.6" font-weight="800" fill="${isCap ? "#dc2626" : "#090d16"}">${escapeHTML(bottomLabel)}</text>
+          </g>
+        `;
+      });
+
+      return `
+        <svg id="svg-graph-${dimKey}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="100%" style="max-width:410px;height:auto;display:block;background:#ffffff">
+          <rect x="0" y="0" width="${size}" height="${size}" fill="#ffffff" />
+          <defs>
+            <marker id="arr-blk-${dimKey}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <polygon points="0 0, 7 3.5, 0 7" fill="#52525b" />
+            </marker>
+            <marker id="arr-red-${dimKey}" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
+              <polygon points="0 0, 8 4, 0 8" fill="#dc2626" />
+            </marker>
+          </defs>
+          <circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="#e4e4e7" stroke-width="1" stroke-dasharray="4 4" />
+          ${edgesSVG}
+          ${nodesSVG}
+        </svg>
+      `;
+    }
+
+    function downloadTextFile(filename, content, mime = "text/csv;charset=utf-8;") {
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadSociogramFile(dimKey, format) {
+      const wave = getActiveWave();
+      const svgEl = document.getElementById(`svg-graph-${dimKey}`);
+      if (!svgEl) return;
+      const xml = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([xml], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(svgBlob);
+
+      if (format === "svg") {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Sociograma_${wave.id}_${dimKey}_Segre.svg`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`Sociograma ${dimKey} exportado en SVG.`, "black");
+      } else {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 880;
+          canvas.height = 880;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.download = `Sociograma_${wave.id}_${dimKey}_PNG2x_Segre.png`;
+          a.click();
+          showToast(`Sociograma ${dimKey} exportado en PNG 2x sobre fondo blanco.`, "black");
+        };
+        img.src = url;
+      }
+    }
+
+    function exportGephiGoldenStandard(wave) {
+      const net = computeNetworkMetrics(wave);
+      const yseq = computeYSEQMetrics(wave);
+      const activePlayers = getActivePlayers();
+      const open = isEnvelopeOpen();
+
+      const nodeHeaders = [
+        "Id",
+        "Label",
+        "Respondio",
+        "InDegree_Tarea",
+        "InDegree_Tarea_Norm",
+        "InDegree_Motivacional",
+        "InDegree_Motivacional_Norm",
+        "InDegree_Social",
+        "InDegree_Social_Norm",
+        "YSEQ_Tarea_Media",
+        "YSEQ_Social_Media"
+      ];
+      const nodeRows = activePlayers.map(pl => {
+        const c = pl.code;
+        const lbl = open ? `${c} · ${pl.displayName}${pl.captainRank > 0 ? ` [C${pl.captainRank}]` : ""}` : c;
+        const resp = wave.responses && wave.responses[c] ? 1 : 0;
+        const y = yseq.perCode[c] || {};
+        return [
+          c,
+          `"${lbl}"`,
+          resp,
+          net.task.inDeg[c] ?? 0,
+          net.task.normIn[c] ?? 0,
+          net.motivational.inDeg[c] ?? 0,
+          net.motivational.normIn[c] ?? 0,
+          net.social.inDeg[c] ?? 0,
+          net.social.normIn[c] ?? 0,
+          y.taskMean ?? "",
+          y.socialMean ?? ""
+        ].join(",");
+      });
+      downloadTextFile(`Nodos_Gephi_${wave.id}.csv`, [nodeHeaders.join(","), ...nodeRows].join("\n"));
+
+      const edgeHeaders = ["Source", "Target", "Type", "Dimension", "Order", "Weight"];
+      const edgeRows = [];
+      ARS_DIMENSIONS.forEach(dim => {
+        net[dim.key].edges.forEach(e => {
+          edgeRows.push([e.from, e.to, "Directed", dim.shortLabel, e.order, 1].join(","));
+        });
+      });
+      setTimeout(() => {
+        downloadTextFile(`Aristas_Gephi_${wave.id}.csv`, [edgeHeaders.join(","), ...edgeRows].join("\n"));
+      }, 200);
+
+      showToast(`Exportados Nodos_Gephi_${wave.id}.csv y Aristas_Gephi_${wave.id}.csv para Gephi.`, "black");
+    }
+
+    function exportFullStatisticalTable(wave, sep = ",") {
+      const net = computeNetworkMetrics(wave);
+      const yseq = computeYSEQMetrics(wave);
+      const activePlayers = getActivePlayers();
+      const open = isEnvelopeOpen();
+      const consent = AppState.data.expandedConsentVerified;
+
+      const headers = [
+        "Oleada",
+        "Codigo_Participante",
+        "Nombre_Si_Sobre_Abierto",
+        "Capitania_Si_Sobre_Abierto",
+        "Respondio",
+        "InDegree_Tarea_Bruto",
+        "InDegree_Tarea_Norm",
+        "RangoMedio_Tarea",
+        "Percentil_Tarea",
+        "InDegree_Motivacional_Bruto",
+        "InDegree_Motivacional_Norm",
+        "RangoMedio_Motivacional",
+        "Percentil_Motivacional",
+        "InDegree_Social_Bruto",
+        "InDegree_Social_Norm",
+        "RangoMedio_Social",
+        "Percentil_Social",
+        "YSEQ_Tarea_Media",
+        "YSEQ_Social_Media",
+        "YSEQ_Item9_Control",
+        "YSEQ_Item10_Control",
+        "Alerta_Aquiescencia",
+        "Minutos_Jugados",
+        "Titularidades",
+        "Pases_Recibidos",
+        "Pases_Por_Minuto"
+      ];
+
+      const rows = activePlayers.map(pl => {
+        const c = pl.code;
+        const resp = wave.responses && wave.responses[c] ? 1 : 0;
+        const y = yseq.perCode[c] || {};
+        const eco = consent ? (wave.ecological?.[pl.id] || {}) : {};
+        const min = eco.minutes !== undefined && eco.minutes !== "" ? Number(eco.minutes) : "";
+        const starts = eco.starts !== undefined && eco.starts !== "" ? Number(eco.starts) : "";
+        const passes = eco.passes !== undefined && eco.passes !== "" ? Number(eco.passes) : "";
+        const ppm = min > 0 && passes !== "" ? (passes / min).toFixed(4) : "NA";
+
+        return [
+          wave.id,
+          c,
+          open ? `"${pl.fullName}"` : "SOBRE_CERRADO",
+          open ? (pl.captainRank > 0 ? `C${pl.captainRank}` : "No") : "SOBRE_CERRADO",
+          resp,
+          net.task.inDeg[c] ?? 0,
+          net.task.normIn[c] ?? 0,
+          net.task.rankMap[c] ?? "",
+          net.task.percentileMap[c] ?? "",
+          net.motivational.inDeg[c] ?? 0,
+          net.motivational.normIn[c] ?? 0,
+          net.motivational.rankMap[c] ?? "",
+          net.motivational.percentileMap[c] ?? "",
+          net.social.inDeg[c] ?? 0,
+          net.social.normIn[c] ?? 0,
+          net.social.rankMap[c] ?? "",
+          net.social.percentileMap[c] ?? "",
+          y.taskMean ?? "NA",
+          y.socialMean ?? "NA",
+          y.v9 ?? "NA",
+          y.v10 ?? "NA",
+          y.isAcquiescent ? 1 : 0,
+          min !== "" ? min : "NA",
+          starts !== "" ? starts : "NA",
+          passes !== "" ? passes : "NA",
+          ppm
+        ].join(sep);
+      });
+
+      const ext = sep === "\t" ? "tsv" : "csv";
+      downloadTextFile(`TFG_Segre_U14_${wave.id}.${ext}`, [headers.join(sep), ...rows].join("\n"));
+      showToast(`Exportado TFG_Segre_U14_${wave.id}.${ext} correctamente.`, "black");
+    }
+
+    /* ==========================================================================
+       8. RENDERIZADO DE LAS 6 PESTAÑAS
+       ========================================================================== */
+    function renderWaveStrip() {
+      const wave = getActiveWave();
+      const activeCount = getActivePlayers().length;
+      return `
+        <div class="wave-strip">
+          <div class="wave-pills">
+            <span style="font-size:0.72rem;font-weight:800;color:var(--segre-text-muted);text-transform:uppercase">Oleada Activa:</span>
+            ${AppState.data.waves.map(w => {
+              const isAct = w.id === wave.id;
+              const nResp = Object.keys(w.responses || {}).length;
+              const dot = w.status === "closed" ? "#090d16" : "#dc2626";
+              return `
+                <button type="button" class="wave-chip ${isAct ? "active" : ""}" data-select-wave="${w.id}">
+                  <span class="status-dot" style="background:${isAct ? "#ffffff" : dot}"></span>
+                  <span>${escapeHTML(w.id)}</span>
+                  <span class="mono" style="font-size:0.71rem;opacity:0.9">[${nResp}/${activeCount}]</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <button type="button" class="btn btn-outline-black btn-sm" id="btn-export-gephi">Gephi Golden Standard (.csv)</button>
+            <button type="button" class="btn btn-black btn-sm" id="btn-export-csv">Exportar CSV</button>
+            <button type="button" class="btn btn-outline-red btn-sm" id="btn-export-tsv">Exportar TSV</button>
+          </div>
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 1: PLANTILLA Y ENTRENADORES (CERO CÓDIGOS Jxx EN ESTA PESTAÑA)
+       -------------------------------------------------------------------------- */
+    function renderStaffTab() {
+      const wave = getActiveWave();
+      const activePlayers = getActivePlayers();
+      const retiredPlayers = AppState.data.players.filter(p => !p.active);
+      const coachNum = AppState.coachDraft.coachNum;
+      const lockedSub = coachNum === 1 ? wave.coach1Blind : wave.coach2Blind;
+      const fullNameById = Object.fromEntries(AppState.data.players.map(p => [p.id, p.fullName]));
+      const displayNameById = Object.fromEntries(AppState.data.players.map(p => [p.id, p.displayName]));
+      const consentOk = AppState.data.expandedConsentVerified;
+
+      const net = computeNetworkMetrics(wave);
+      const codeToDisplayName = Object.fromEntries(AppState.data.players.map(p => [p.code, p.displayName]));
+      const codeToId = Object.fromEntries(AppState.data.players.map(p => [p.code, p.id]));
+      const open = isEnvelopeOpen();
+
+      return `
+        ${renderWaveStrip()}
+
+        <div class="notice notice-zinc">
+          <div>
+            <strong>Doble Ciego Garantizado — Vista Cuerpo Técnico:</strong> Aquí se trabaja exclusivamente con los nombres de los jugadores. Ningún código interno (<span class="mono">J01–J50</span>) es visible en esta pestaña.
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- GESTIÓN DE PLANTILLA U14 -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Plantilla Atlètic Segre U14 (N = ${activePlayers.length})</h2>
+                <p class="card-subtitle">Edita el nombre de pila visible en la encuesta móvil, dorsal o capitanía formal (única por rango).</p>
+              </div>
+            </div>
+
+            <form id="form-add-player" style="display:grid;grid-template-columns:1.2fr 0.95fr 0.55fr auto;gap:8px;margin-bottom:14px;background:var(--segre-canvas);padding:12px;border-radius:var(--radius-md);border:1px solid var(--segre-border)">
+              <div>
+                <label class="field-label">Nombre y Apellidos</label>
+                <input type="text" id="inp-add-fullname" placeholder="Ej. Marc Soler Vila" required />
+              </div>
+              <div>
+                <label class="field-label">Nombre de pila</label>
+                <input type="text" id="inp-add-displayname" placeholder="Ej. Marc S." required />
+              </div>
+              <div>
+                <label class="field-label">Dorsal</label>
+                <input type="text" id="inp-add-dorsal" placeholder="Opc." />
+              </div>
+              <div style="display:flex;align-items:flex-end">
+                <button type="submit" class="btn btn-red">+ Alta</button>
+              </div>
+            </form>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre y Apellidos</th>
+                    <th>Nombre Encuesta</th>
+                    <th style="width:68px">Dorsal</th>
+                    <th>Capitanía Formal</th>
+                    <th class="text-center">Baja</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${activePlayers.map((pl, idx) => `
+                    <tr>
+                      <td class="mono" style="color:var(--segre-text-muted)">${idx + 1}</td>
+                      <td>
+                        <input type="text" value="${escapeHTML(pl.fullName)}" data-edit-full="${pl.id}" style="padding:5px 8px;font-weight:700" />
+                      </td>
+                      <td>
+                        <input type="text" value="${escapeHTML(pl.displayName)}" data-edit-display="${pl.id}" style="padding:5px 8px;font-weight:700;color:var(--segre-red)" />
+                      </td>
+                      <td>
+                        <input type="text" value="${escapeHTML(pl.dorsal || "")}" data-edit-dorsal="${pl.id}" placeholder="—" style="padding:5px 6px;text-align:center" />
+                      </td>
+                      <td>
+                        <select data-edit-captain="${pl.id}" style="padding:5px 8px;font-size:0.76rem">
+                          <option value="0" ${pl.captainRank === 0 ? "selected" : ""}>Sin brazalete</option>
+                          <option value="1" ${pl.captainRank === 1 ? "selected" : ""}>1.º Capitán</option>
+                          <option value="2" ${pl.captainRank === 2 ? "selected" : ""}>2.º Capitán</option>
+                          <option value="3" ${pl.captainRank === 3 ? "selected" : ""}>3.º Capitán</option>
+                          <option value="4" ${pl.captainRank === 4 ? "selected" : ""}>4.º Capitán</option>
+                        </select>
+                      </td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-outline-red btn-sm" data-retire-id="${pl.id}">Baja</button>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+
+            ${retiredPlayers.length > 0 ? `
+              <div style="margin-top:12px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--segre-canvas);border:1px solid var(--segre-border);font-size:0.75rem;color:var(--segre-text-secondary)">
+                <strong>Bajas registradas (${retiredPlayers.length}):</strong> ${retiredPlayers.map(p => escapeHTML(p.fullName)).join(", ")}. Sus códigos internos quedaron retirados permanentemente.
+              </div>
+            ` : ""}
+          </div>
+
+          <!-- PREDICCIÓN CIEGA DE ENTRENADORES (SOLO NOMBRES, CERO CÓDIGOS) -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Predicción Ciega Entrenadores — ${escapeHTML(wave.id)}</h2>
+                <p class="card-subtitle">Elige el Top 3 por nombre real en cada dimensión. Se sella con marca temporal y huella SHA-256.</p>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-bottom:14px">
+              <button type="button" class="btn ${coachNum === 1 ? "btn-red" : "btn-outline-black"}" style="flex:1" data-coach-tab="1">
+                1.º Entrenador ${wave.coach1Blind ? "✓ Sellado" : "(Pendiente)"}
+              </button>
+              <button type="button" class="btn ${coachNum === 2 ? "btn-red" : "btn-outline-black"}" style="flex:1" data-coach-tab="2">
+                2.º Entrenador ${wave.coach2Blind ? "✓ Sellado" : "(Pendiente)"}
+              </button>
+            </div>
+
+            ${lockedSub ? `
+              <div class="notice notice-zinc" style="flex-direction:column;gap:8px">
+                <div><strong>Predicción del ${coachNum === 1 ? "1.º" : "2.º"} Entrenador registrada y sellada (${escapeHTML(wave.id)}).</strong></div>
+                <div style="font-size:0.74rem">Marca temporal: <span class="mono">${escapeHTML(lockedSub.submittedAt)}</span></div>
+                <div style="font-size:0.71rem;word-break:break-all">Huella SHA-256: <span class="mono">${escapeHTML(lockedSub.sha256)}</span></div>
+                <div style="background:var(--segre-white);border:1px solid var(--segre-border-strong);border-radius:8px;padding:10px;width:100%;font-size:0.8rem">
+                  <div><strong>Top 3 Tarea:</strong> ${lockedSub.task.map(id => escapeHTML(fullNameById[id] || "")).join(", ")}</div>
+                  <div style="margin-top:4px"><strong>Top 3 Motivacional:</strong> ${lockedSub.motivational.map(id => escapeHTML(fullNameById[id] || "")).join(", ")}</div>
+                  <div style="margin-top:4px"><strong>Top 3 Social:</strong> ${lockedSub.social.map(id => escapeHTML(fullNameById[id] || "")).join(", ")}</div>
+                </div>
+              </div>
+            ` : `
+              <div style="display:flex;flex-direction:column;gap:14px">
+                ${ARS_DIMENSIONS.map(dim => {
+                  const picked = AppState.coachDraft[dim.key] || [];
+                  return `
+                    <div style="border:1px solid var(--segre-border);border-radius:var(--radius-md);padding:12px;background:var(--segre-canvas)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <strong style="font-size:0.8rem">Top 3 · ${escapeHTML(dim.label)}</strong>
+                        <span class="mono" style="font-size:0.75rem;font-weight:800;color:var(--segre-red)">${picked.length}/3 elegidos</span>
+                      </div>
+                      <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:6px">
+                        ${activePlayers.map(pl => {
+                          const isSel = picked.includes(pl.id);
+                          const pos = picked.indexOf(pl.id) + 1;
+                          return `
+                            <button type="button" data-coach-pick="${dim.key}:${pl.id}" style="padding:7px 8px;border-radius:8px;border:1.5px solid ${isSel ? "var(--segre-red)" : "var(--segre-black)"};background:${isSel ? "var(--segre-red)" : "var(--segre-white)"};color:${isSel ? "var(--segre-white)" : "var(--segre-black)"};font-size:0.75rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+                              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHTML(pl.displayName)}</span>
+                              ${isSel ? `<span class="mono" style="font-size:0.68rem">#${pos}</span>` : ""}
+                            </button>
+                          `;
+                        }).join("")}
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+
+                <button type="button" class="btn btn-red" id="btn-seal-coach-pred"
+                  ${AppState.coachDraft.task.length !== 3 || AppState.coachDraft.motivational.length !== 3 || AppState.coachDraft.social.length !== 3 ? "disabled" : ""}>
+                  Sellar Predicción Ciega del ${coachNum === 1 ? "1.º" : "2.º"} Entrenador
+                </button>
+              </div>
+            `}
+          </div>
+        </div>
+
+        <!-- COMPARACIÓN PREDICCIÓN ENTRENADORES VS. RED REAL (SOLO NOMBRES, CERO CÓDIGOS) -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Contraste Predicción Cuerpo Técnico vs. Red Real (${escapeHTML(wave.id)})</h2>
+              <p class="card-subtitle">Comparación nominal directa sin códigos de estudio. ${open ? "Sobre Cerrado abierto: se muestran los nombres empíricos reales." : "Mientras el Sobre Cerrado esté sellado, los nombres empíricos reales permanecen ocultos."}</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Dimensión</th>
+                  <th>Top 3 · 1.º Entrenador</th>
+                  <th class="text-center">Acierto 1.º Entr.</th>
+                  <th>Top 3 · 2.º Entrenador</th>
+                  <th class="text-center">Acierto 2.º Entr.</th>
+                  <th>Top 3 Empírico Real (Plantilla)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${ARS_DIMENSIONS.map(dim => {
+                  const realCodes = net[dim.key].top3Codes;
+                  const realPlayerIds = realCodes.map(c => codeToId[c]).filter(Boolean);
+
+                  const evalCoach = (sub) => {
+                    if (!sub) return { names: "Pendiente de registrar", pct: "—" };
+                    const names = sub[dim.key].map(pid => displayNameById[pid] || "").join(", ");
+                    if (realPlayerIds.length === 0) return { names, pct: "Sin respuestas" };
+                    const hits = sub[dim.key].filter(pid => realPlayerIds.includes(pid)).length;
+                    const pct = `${((hits / 3) * 100).toFixed(1)}% (${hits}/3)`;
+                    return { names, pct };
+                  };
+
+                  const c1 = evalCoach(wave.coach1Blind);
+                  const c2 = evalCoach(wave.coach2Blind);
+                  const empiricalDisplay = open
+                    ? (realCodes.map(c => codeToDisplayName[c] || "").join(", ") || "Sin nominaciones")
+                    : "Oculto (Sobre Cerrado sellado)";
+
+                  return `
+                    <tr>
+                      <td class="font-bold">${escapeHTML(dim.label)}</td>
+                      <td>${escapeHTML(c1.names)}</td>
+                      <td class="mono text-center font-bold">${escapeHTML(c1.pct)}</td>
+                      <td>${escapeHTML(c2.names)}</td>
+                      <td class="mono text-center font-bold">${escapeHTML(c2.pct)}</td>
+                      <td style="font-weight:${open ? "800" : "600"};color:${open ? "var(--segre-red)" : "var(--segre-text-muted)"}">${escapeHTML(empiricalDisplay)}</td>
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CONSENTIMIENTO AMPLIADO Y TRIANGULACIÓN ECOLÓGICA -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Consentimiento Ampliado y Variables Competitivas (${escapeHTML(wave.id)})</h2>
+              <p class="card-subtitle">Minutos jugados, titularidades, capitanía formal y pases recibidos en partido oficial.</p>
+            </div>
+          </div>
+
+          <div class="notice ${consentOk ? "notice-zinc" : "notice-red"}" style="margin-bottom:14px">
+            <input type="checkbox" id="chk-expanded-consent" ${consentOk ? "checked" : ""} style="width:18px;height:18px;margin-top:2px;cursor:pointer;accent-color:#dc2626" />
+            <label for="chk-expanded-consent" style="cursor:pointer">
+              <strong>Consentimiento ampliado (minutos/pases/capitanía):</strong> Confirmo que las familias han firmado la ampliación del consentimiento informado autorizando el cruce de estas variables competitivas con el cuestionario del TFG.
+            </label>
+          </div>
+
+          ${consentOk ? `
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Jugador</th>
+                    <th class="text-center">Minutos Jugados</th>
+                    <th class="text-center">Titularidades</th>
+                    <th class="text-center">Pases Recibidos</th>
+                    <th class="text-center">Pases / Minuto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${activePlayers.map(pl => {
+                    const eco = wave.ecological?.[pl.id] || { minutes: "", starts: "", passes: "" };
+                    const ppm = Number(eco.minutes) > 0 && eco.passes !== ""
+                      ? (Number(eco.passes) / Number(eco.minutes)).toFixed(3)
+                      : "—";
+                    return `
+                      <tr>
+                        <td class="font-bold">${escapeHTML(pl.fullName)}</td>
+                        <td class="text-center"><input type="number" min="0" value="${eco.minutes ?? ""}" data-eco="minutes:${pl.id}" style="width:90px;text-align:center;padding:5px" /></td>
+                        <td class="text-center"><input type="number" min="0" value="${eco.starts ?? ""}" data-eco="starts:${pl.id}" style="width:80px;text-align:center;padding:5px" /></td>
+                        <td class="text-center"><input type="number" min="0" value="${eco.passes ?? ""}" data-eco="passes:${pl.id}" style="width:90px;text-align:center;padding:5px" /></td>
+                        <td class="mono text-center font-bold">${ppm}</td>
+                      </tr>
+                    `;
+                  }).join("")}
+                </tbody>
+              </table>
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 2: OLEADAS Y QR (DENOMINACIÓN Y MOMENTO EDITABLES + QR ISO/IEC 18004)
+       -------------------------------------------------------------------------- */
+    function renderWavesAndSurveyTab() {
+      const wave = getActiveWave();
+      const activePlayers = getActivePlayers();
+      const rawBase = (AppState.qrBaseUrlInput || "").trim().replace(/\/+$/, "");
+      const scanUrl = rawBase
+        ? `${rawBase}?modo=encuesta&w=${encodeURIComponent(wave.id)}`
+        : `${window.location.origin}${window.location.pathname}?modo=encuesta&w=${encodeURIComponent(wave.id)}`;
+      const qrSvg = OfflineQR.toSVG(scanUrl, 160);
+      const isFileProtocol = window.location.protocol === "file:" && !rawBase.startsWith("http");
+
+      return `
+        ${!isMobileUrlMode && !AppState.kioskInAppMode ? renderWaveStrip() : ""}
+
+        ${!isMobileUrlMode && !AppState.kioskInAppMode ? `
+          <!-- GESTIÓN DE OLEADAS CON DENOMINACIÓN Y MOMENTO EDITABLES -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Gestión de Oleadas Longitudinales</h2>
+                <p class="card-subtitle">Edita directamente la denominación y el momento de implementación de cada oleada. El Sobre Cerrado solo podrá abrirse cuando TODAS estén cerradas.</p>
+              </div>
+              <button type="button" class="btn btn-red btn-sm" id="btn-add-wave">+ Añadir Oleada (T${AppState.data.nextWaveSeq || AppState.data.waves.length + 1})</button>
+            </div>
+
+            <div class="grid-3">
+              ${AppState.data.waves.map(w => {
+                const nResp = Object.keys(w.responses || {}).length;
+                const isClosed = w.status === "closed";
+                return `
+                  <div style="border:1.5px solid ${w.id === wave.id ? "var(--segre-red)" : "var(--segre-black)"};border-radius:var(--radius-md);padding:16px;background:var(--segre-white);display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+                    <div style="display:flex;flex-direction:column;gap:9px">
+                      <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span class="pill pill-red mono">${escapeHTML(w.id)}</span>
+                        <span class="pill ${isClosed ? "pill-black" : "pill-white-outline"}">
+                          ${isClosed ? "Oleada Cerrada ✓" : "Abierta (Recogida)"}
+                        </span>
+                      </div>
+
+                      <div>
+                        <label class="field-label">Denominación</label>
+                        <input type="text" value="${escapeHTML(w.label)}" data-edit-wave-label="${w.id}" style="font-weight:700" />
+                      </div>
+
+                      <div>
+                        <label class="field-label">Momento de implementación</label>
+                        <input type="text" value="${escapeHTML(w.period)}" data-edit-wave-period="${w.id}" />
+                      </div>
+
+                      <div style="font-size:0.78rem;padding-top:2px">
+                        Respuestas registradas: <strong class="mono">${nResp} / ${activePlayers.length}</strong>
+                      </div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:7px;padding-top:10px;border-top:1px solid var(--segre-border)">
+                      <button type="button" class="btn btn-red btn-sm" data-kiosk-wave="${w.id}">
+                        Abrir Encuesta en este Dispositivo (Modo Kiosko / Prueba)
+                      </button>
+                      <div style="display:flex;gap:6px">
+                        <button type="button" class="btn ${isClosed ? "btn-outline-black" : "btn-black"} btn-sm" style="flex:1" data-toggle-wave-status="${w.id}">
+                          ${isClosed ? "Reabrir Oleada" : "Cerrar Oleada ✓"}
+                        </button>
+                        <button type="button" class="btn btn-outline-black btn-sm" data-gephi-wave="${w.id}" title="Exportar CSV para Gephi">
+                          Gephi (.csv)
+                        </button>
+                        ${AppState.data.waves.length > 1 ? `
+                          <button type="button" class="btn btn-outline-red btn-sm" data-del-wave="${w.id}">Borrar</button>
+                        ` : ""}
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- GENERADOR QR LOCAL + IMPORTADOR DE TOKENS -->
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Código QR Local para Móviles (${escapeHTML(wave.id)})</h2>
+                  <p class="card-subtitle">QR ISO/IEC 18004 generado 100% offline. Contiene exclusivamente la URL corta sin nombres ni códigos de jugadores.</p>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start">
+                <div>${qrSvg}</div>
+                <div style="display:flex;flex-direction:column;gap:9px">
+                  <div>
+                    <label class="field-label">URL Base para Escaneo Móvil</label>
+                    <input type="text" id="inp-qr-base-url" value="${escapeHTML(AppState.qrBaseUrlInput)}" placeholder="Ej. http://192.168.1.45:8000/laboratorio_tfg_ars_u14.html" />
+                  </div>
+                  <div style="font-size:0.74rem;color:var(--segre-text-secondary);word-break:break-all">
+                    Enlace codificado (${scanUrl.length} caracteres):<br/>
+                    <span id="lbl-qr-scan-url" class="mono" style="background:var(--segre-canvas);padding:3px 7px;border-radius:4px;border:1px solid var(--segre-border-strong);display:inline-block;margin-top:3px">${escapeHTML(scanUrl)}</span>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+                    <button type="button" class="btn btn-black btn-sm" id="btn-copy-scan-url">Copiar Enlace</button>
+                    <button type="button" class="btn btn-red btn-sm" data-kiosk-wave="${wave.id}">Abrir Modo Kiosko (${escapeHTML(wave.id)})</button>
+                  </div>
+                </div>
+              </div>
+
+              ${isFileProtocol ? `
+                <div class="notice notice-red" style="margin-top:14px">
+                  <div>
+                    <strong>Modo archivo local (<span class="mono">file:///</span>):</strong> Para que los móviles del vestuario abran el QR, sirve esta carpeta en tu red Wi-Fi con <span class="mono">python3 -m http.server 8000</span> e introduce arriba tu IP local (ej. <span class="mono">http://192.168.1.45:8000/laboratorio_tfg_ars_u14.html</span>).
+                  </div>
+                </div>
+              ` : ""}
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Importador de Respuestas Móviles (<span class="mono">TFG1_...</span>)</h2>
+                  <p class="card-subtitle">Pega uno o varios tokens recibidos desde los móviles (uno por línea). Se convierten automáticamente al código interno <span class="mono">Jxx</span>.</p>
+                </div>
+              </div>
+
+              <form id="form-import-tokens" style="display:flex;flex-direction:column;gap:10px">
+                <textarea id="txt-import-tokens" rows="5" placeholder="Pega aquí los tokens TFG1_... enviados por los jugadores (puedes pegar varios a la vez, uno por línea)"></textarea>
+                <div>
+                  <button type="submit" class="btn btn-red">Importar Respuestas al Estudio</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        ` : ""}
+
+        ${isMobileUrlMode || AppState.kioskInAppMode ? renderMobileSurveyShell() : ""}
+      `;
+    }
+
+    function renderMobileSurveyShell() {
+      const s = AppState.surveySession;
+      const wave = AppState.data.waves.find(w => w.id === s.waveId) || getActiveWave();
+      const activePlayers = getActivePlayers();
+      const totalSteps = 1 + 3 + YSEQ_ITEMS.length; // 0=nombre, 1..3=ARS, 4..21=YSEQ 1..18, 22=fin
+      const pct = Math.min(100, Math.round((s.step / totalSteps) * 100));
+
+      let bodyHTML = "";
+
+      if (wave.status !== "open" && s.step === 0) {
+        bodyHTML = `
+          <div style="padding:26px;text-align:center;display:flex;flex-direction:column;gap:12px">
+            <span class="pill pill-black" style="margin:0 auto">Estado: Oleada Cerrada</span>
+            <h3 style="margin:0;font-size:1.05rem;font-weight:800">Esta oleada ya está cerrada</h3>
+            <p style="margin:0;font-size:0.82rem;color:var(--segre-text-secondary)">
+              La oleada <strong>${escapeHTML(wave.label)}</strong> no admite nuevas respuestas en este momento.
+            </p>
+          </div>
+        `;
+      } else if (s.step === 0) {
+        // Paso 0: Selección de nombre de pila sin jugador preseleccionado y cero códigos Jxx
+        bodyHTML = `
+          <div style="padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span class="pill pill-neutral" style="width:fit-content">Identificación · Participante</span>
+            <h3 style="margin:0;font-size:1.1rem;font-weight:800">Selecciona tu nombre de pila</h3>
+            <p style="margin:0;font-size:0.82rem;color:var(--segre-text-secondary)">
+              Elige tu nombre en el desplegable para excluirte automáticamente de la lista de compañeros. Tus respuestas son confidenciales.
+            </p>
+            <div>
+              <label class="field-label">¿Quién eres?</label>
+              <select id="sel-survey-player" style="font-size:0.95rem;font-weight:700;min-height:46px">
+                <option value="" ${s.selectedPlayerId === "" ? "selected" : ""}>— Selecciona tu nombre —</option>
+                ${activePlayers.map(pl => {
+                  const dorsalTxt = pl.dorsal ? ` (#${pl.dorsal})` : "";
+                  return `<option value="${pl.id}" ${s.selectedPlayerId === pl.id ? "selected" : ""}>${escapeHTML(pl.displayName)}${escapeHTML(dorsalTxt)}</option>`;
+                }).join("")}
+              </select>
+            </div>
+            <button type="button" class="btn btn-red" id="btn-survey-start" style="min-height:46px;font-size:0.92rem" ${!s.selectedPlayerId ? "disabled" : ""}>
+              Comenzar Cuestionario →
+            </button>
+          </div>
+        `;
+      } else if (s.step >= 1 && s.step <= 3) {
+        // Pasos 1-3: Nominación no forzada con botón explícito "Ninguno" y sustitución del nombre por "VOTADO"
+        const dim = ARS_DIMENSIONS[s.step - 1];
+        const picked = s[dim.key] || [];
+        const isNoneSelected = Boolean(s[`${dim.key}None`]);
+        const teammates = activePlayers.filter(pl => pl.id !== s.selectedPlayerId);
+        const canContinue = isNoneSelected || picked.length > 0;
+
+        bodyHTML = `
+          <div style="padding:24px;display:flex;flex-direction:column;gap:15px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <span class="pill pill-red">${escapeHTML(dim.label)} (${s.step}/3)</span>
+              <span class="mono" style="font-size:0.8rem;font-weight:800">
+                ${isNoneSelected ? "Opción: Ninguno" : `Elegidos: ${picked.length}/3`}
+              </span>
+            </div>
+
+            <p style="margin:0;font-size:0.95rem;font-weight:700;line-height:1.45">
+              «${escapeHTML(dim.prompt)}»
+            </p>
+
+            <!-- Opción explícita "Ninguno" para no obligar a elegir líder -->
+            <button type="button" class="ninguno-btn ${isNoneSelected ? "is-active" : ""}" data-antipeek-none="${dim.key}">
+              ${isNoneSelected ? "✓ Ninguno (No percibo ningún líder en este rol)" : "Ninguno"}
+            </button>
+
+            <!-- Rejilla anti-curiosos: al votar, el nombre desaparece y pasa a mostrar exactamente "VOTADO" -->
+            <div class="nomination-grid">
+              ${teammates.map(tm => {
+                const isVoted = picked.includes(tm.id);
+                const labelTxt = isVoted
+                  ? "VOTADO"
+                  : `${tm.displayName}${tm.dorsal ? ` #${tm.dorsal}` : ""}`;
+                return `
+                  <button type="button" class="anti-peek-btn ${isVoted ? "is-voted" : ""}" data-antipeek-vote="${dim.key}:${tm.id}">
+                    ${escapeHTML(labelTxt)}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <div style="display:flex;gap:10px;padding-top:8px">
+              <button type="button" class="btn btn-outline-black" data-survey-step="${s.step - 1}">← Atrás</button>
+              <button type="button" class="btn btn-red" style="flex:1" data-survey-step="${s.step + 1}" ${!canContinue ? "disabled" : ""}>
+                Siguiente →
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (s.step >= 4 && s.step <= 3 + YSEQ_ITEMS.length) {
+        // Pasos 4-21: YSEQ-S (18 ítems) con opción "Prefiero no contestar"
+        const item = YSEQ_ITEMS[s.step - 4];
+        const curVal = s.yseq[item.id]; // undefined | 1..9 | null (opt-out)
+        const hasChoice = curVal !== undefined;
+        const isLastItem = s.step === 3 + YSEQ_ITEMS.length;
+
+        bodyHTML = `
+          <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="pill pill-black">Cuestionario Equipo · Frase ${item.id} de ${YSEQ_ITEMS.length}</span>
+              <span class="mono" style="font-size:0.75rem;color:var(--segre-text-muted)">Escala 1 a 9</span>
+            </div>
+
+            <p style="margin:0;font-size:0.98rem;font-weight:800;line-height:1.45;min-height:54px">
+              «${escapeHTML(item.text)}»
+            </p>
+
+            <div>
+              <div class="likert-row">
+                ${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => `
+                  <button type="button" class="likert-btn ${curVal === num ? "selected" : ""}" data-yseq-pick="${item.id}:${num}">${num}</button>
+                `).join("")}
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--segre-text-muted);margin-top:6px;font-weight:700">
+                <span>1 = Totalmente en desacuerdo</span>
+                <span>9 = Totalmente de acuerdo</span>
+              </div>
+
+              <button type="button" class="optout-btn ${curVal === null ? "selected" : ""}" data-yseq-optout="${item.id}">
+                ${curVal === null ? "✓ Marcado: Prefiero no contestar a esta frase" : "Prefiero no contestar"}
+              </button>
+            </div>
+
+            <div style="display:flex;gap:10px;padding-top:6px">
+              <button type="button" class="btn btn-outline-black" data-survey-step="${s.step - 1}">← Atrás</button>
+              ${!isLastItem ? `
+                <button type="button" class="btn btn-red" style="flex:1" data-survey-step="${s.step + 1}" ${!hasChoice ? "disabled" : ""}>
+                  Siguiente →
+                </button>
+              ` : `
+                <button type="button" class="btn btn-black" style="flex:1" id="btn-submit-survey" ${!hasChoice ? "disabled" : ""}>
+                  Finalizar y Enviar ✓
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      } else {
+        bodyHTML = `
+          <div style="padding:26px;display:flex;flex-direction:column;gap:14px">
+            <div style="text-align:center">
+              <div style="width:46px;height:46px;border-radius:14px;background:var(--segre-red);color:var(--segre-white);display:flex;align-items:center;justify-content:center;margin:0 auto 10px auto;font-size:1.35rem;font-weight:900">✓</div>
+              <h3 style="margin:0;font-size:1.12rem;font-weight:800">¡Cuestionario Completado!</h3>
+              <p style="margin:6px 0 0 0;font-size:0.81rem;color:var(--segre-text-secondary)">
+                ${s.serverSynced
+                  ? "Respuesta registrada directamente en la oleada del estudio."
+                  : "El código de respuesta se ha copiado automáticamente. Envíalo al investigador para importarlo en el estudio."}
+              </p>
+            </div>
+
+            <div>
+              <label class="field-label">Código de Respuesta (${escapeHTML(wave.id)})</label>
+              <textarea id="txt-generated-token" rows="3" readonly class="mono" style="font-size:0.75rem;background:var(--segre-canvas)">${escapeHTML(s.generatedToken)}</textarea>
+            </div>
+
+            <button type="button" class="btn btn-red" id="btn-copy-token" style="min-height:44px">
+              Copiar Código de Respuesta
+            </button>
+
+            <div style="font-size:0.7rem;color:var(--segre-text-muted);text-align:center;word-break:break-all">
+              Huella de integridad SHA-256: <span class="mono">${escapeHTML(s.receiptHash)}</span>
+            </div>
+
+            <button type="button" class="btn btn-outline-black" id="btn-reset-survey-session">
+              Siguiente Jugador / Reiniciar Formulario
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="survey-shell">
+          <div class="survey-top">
+            <div>
+              <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;color:#fca5a5;letter-spacing:0.04em">
+                Atlètic Segre U14 · ${escapeHTML(wave.label)}
+              </div>
+              <div style="font-size:0.9rem;font-weight:800;margin-top:2px">Cuestionario de Liderazgo y Cohesión</div>
+            </div>
+            ${AppState.kioskInAppMode && !isMobileUrlMode ? `
+              <button type="button" class="btn btn-red btn-sm" id="btn-close-kiosk">Salir del Kiosko</button>
+            ` : ""}
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:${pct}%"></div>
+          </div>
+          ${bodyHTML}
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 3: SOCIOGRAMAS (DOBLE CIEGO ESTRICTO HASTA ABRIR SOBRE CERRADO)
+       -------------------------------------------------------------------------- */
+    function renderSociogramsTab() {
+      const wave = getActiveWave();
+      const net = computeNetworkMetrics(wave);
+      const open = isEnvelopeOpen();
+
+      return `
+        ${renderWaveStrip()}
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Sociogramas Direccionales ARS (${escapeHTML(wave.label)})</h2>
+              <p class="card-subtitle">
+                Centralidad In-Degree normalizada por respondientes reales elegibles (excluyendo al propio jugador).
+                ${open ? "Sobre Cerrado abierto: se muestra el código junto al nombre real." : "Doble ciego activo: se muestran exclusivamente los códigos J01–J50."}
+              </p>
+            </div>
+            ${AppState.selectedGraphNode ? `
+              <button type="button" class="btn btn-outline-red btn-sm" id="btn-clear-graph-node">Ver red completa (Quitar filtro ${escapeHTML(AppState.selectedGraphNode)})</button>
+            ` : ""}
+          </div>
+
+          <div class="grid-3">
+            ${ARS_DIMENSIONS.map(dim => {
+              const d = net[dim.key];
+              const topLabels = d.top3Codes.map(c => {
+                const pl = AppState.data.players.find(p => p.code === c);
+                return pl ? formatResearchNodeLabel(pl, false) : c;
+              });
+              return `
+                <div style="border:1px solid var(--segre-border);border-radius:var(--radius-md);padding:14px;background:var(--segre-canvas)">
+                  <div style="font-weight:800;font-size:0.84rem;color:var(--segre-black);margin-bottom:8px">${escapeHTML(dim.label)}</div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:10px">
+                    <div style="background:var(--segre-white);padding:7px;border-radius:8px;border:1px solid var(--segre-border)">
+                      <div style="font-size:0.65rem;color:var(--segre-text-muted);font-weight:700">DENSIDAD</div>
+                      <div class="mono font-black" style="font-size:0.92rem">${d.density.toFixed(3)}</div>
+                    </div>
+                    <div style="background:var(--segre-white);padding:7px;border-radius:8px;border:1px solid var(--segre-border)">
+                      <div style="font-size:0.65rem;color:var(--segre-text-muted);font-weight:700">CENTRALIZ.</div>
+                      <div class="mono font-black" style="font-size:0.92rem">${d.centralization.toFixed(3)}</div>
+                    </div>
+                    <div style="background:var(--segre-white);padding:7px;border-radius:8px;border:1px solid var(--segre-border)">
+                      <div style="font-size:0.65rem;color:var(--segre-text-muted);font-weight:700">ARISTAS</div>
+                      <div class="mono font-black" style="font-size:0.92rem">${d.edges.length}</div>
+                    </div>
+                  </div>
+                  <div style="font-size:0.74rem;color:var(--segre-text-secondary)">
+                    <strong>Top 3 (inclusivo empates):</strong> ${topLabels.length > 0 ? escapeHTML(topLabels.join(", ")) : "Sin nominaciones"}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+
+        <div class="grid-3">
+          ${ARS_DIMENSIONS.map(dim => `
+            <div class="card" style="padding:16px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px">
+                <div>
+                  <h3 style="margin:0;font-size:0.9rem;font-weight:800">${escapeHTML(dim.label)}</h3>
+                  <div style="font-size:0.72rem;color:var(--segre-text-muted)">Toca un nodo para aislar sus aristas</div>
+                </div>
+                <div style="display:flex;gap:5px">
+                  <button type="button" class="btn btn-outline-black btn-sm" data-graph-dl="${dim.key}:svg">SVG</button>
+                  <button type="button" class="btn btn-red btn-sm" data-graph-dl="${dim.key}:png">PNG 2x</button>
+                </div>
+              </div>
+              <div class="sociogram-box">
+                ${buildSociogramSVGString(wave, dim.key, net, AppState.selectedGraphNode)}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 4: YSEQ-S Y ESTADÍSTICA (H1–H4, MONTE CARLO, WILCOXON, BH-FDR)
+       -------------------------------------------------------------------------- */
+    function renderPsychometricsAndStatsTab() {
+      const wave = getActiveWave();
+      const net = computeNetworkMetrics(wave);
+      const yseq = computeYSEQMetrics(wave);
+      const activePlayers = getActivePlayers();
+      const activeCodes = activePlayers.map(p => p.code);
+      const open = isEnvelopeOpen();
+
+      // Suite global de contrastes inferenciales para ajuste Benjamini-Hochberg (BH-FDR)
+      const suite = [];
+
+      // H2: Centralidad normalizada vs Cohesión YSEQ-S (Tarea y Social)
+      ARS_DIMENSIONS.forEach(dim => {
+        ["taskMean", "socialMean"].forEach(subKey => {
+          const x = [], y = [];
+          activeCodes.forEach(c => {
+            const val = yseq.perCode[c]?.[subKey];
+            if (typeof val === "number") {
+              x.push(net[dim.key].normIn[c]);
+              y.push(val);
+            }
+          });
+          const res = StatsEngine.spearmanMonteCarlo(x, y);
+          if (res.rho !== null) {
+            suite.push({
+              hyp: "H2",
+              label: `In-Degree Norm. ${dim.shortLabel} vs. YSEQ-S ${subKey === "taskMean" ? "Tarea" : "Social"} (${wave.id})`,
+              stat: `ρ = ${res.rho.toFixed(3)}`,
+              pRaw: res.p,
+              n: res.n
+            });
+          }
+        });
+      });
+
+      // H3: Diferenciación de redes (correlaciones entre dimensiones de liderazgo)
+      [
+        ["task", "motivational", "In-Degree Norm. Tarea vs. Motivacional"],
+        ["task", "social", "In-Degree Norm. Tarea vs. Social"],
+        ["motivational", "social", "In-Degree Norm. Motivacional vs. Social"]
+      ].forEach(([d1, d2, title]) => {
+        const x = activeCodes.map(c => net[d1].normIn[c]);
+        const y = activeCodes.map(c => net[d2].normIn[c]);
+        const res = StatsEngine.spearmanMonteCarlo(x, y);
+        if (res.rho !== null) {
+          suite.push({
+            hyp: "H3",
+            label: `${title} (${wave.id})`,
+            stat: `ρ = ${res.rho.toFixed(3)}`,
+            pRaw: res.p,
+            n: res.n
+          });
+        }
+      });
+
+      // H4 Ecológico: triangulación con minutos y pases/minuto (si consentimiento ampliado verificado)
+      if (AppState.data.expandedConsentVerified) {
+        ARS_DIMENSIONS.forEach(dim => {
+          const xMin = [], yMin = [], xPpm = [], yPpm = [];
+          activePlayers.forEach(pl => {
+            const eco = wave.ecological?.[pl.id];
+            if (eco && Number(eco.minutes) > 0) {
+              xMin.push(net[dim.key].normIn[pl.code]);
+              yMin.push(Number(eco.minutes));
+              if (eco.passes !== "" && eco.passes !== undefined) {
+                xPpm.push(net[dim.key].normIn[pl.code]);
+                yPpm.push(Number(eco.passes) / Number(eco.minutes));
+              }
+            }
+          });
+          const rMin = StatsEngine.spearmanMonteCarlo(xMin, yMin);
+          if (rMin.rho !== null) {
+            suite.push({
+              hyp: "H4 (Eco)",
+              label: `In-Degree Norm. ${dim.shortLabel} vs. Minutos Jugados (${wave.id})`,
+              stat: `ρ = ${rMin.rho.toFixed(3)}`,
+              pRaw: rMin.p,
+              n: rMin.n
+            });
+          }
+          const rPpm = StatsEngine.spearmanMonteCarlo(xPpm, yPpm);
+          if (rPpm.rho !== null) {
+            suite.push({
+              hyp: "H4 (Eco)",
+              label: `In-Degree Norm. ${dim.shortLabel} vs. Pases Recibidos/Min (${wave.id})`,
+              stat: `ρ = ${rPpm.rho.toFixed(3)}`,
+              pRaw: rPpm.p,
+              n: rPpm.n
+            });
+          }
+        });
+      }
+
+      // H4 Longitudinal: Wilcoxon pareado con corrección por empates + Jaccard + YSEQ pareado
+      const waveA = AppState.data.waves.find(w => w.id === AppState.compareWaveAId) || AppState.data.waves[0];
+      const waveB = AppState.data.waves.find(w => w.id === AppState.compareWaveBId) || AppState.data.waves[1] || AppState.data.waves[0];
+      const canCompareLong = waveA && waveB && waveA.id !== waveB.id &&
+        Object.keys(waveA.responses || {}).length >= 3 && Object.keys(waveB.responses || {}).length >= 3;
+
+      let longNetRows = [];
+      let longYSEQ = null;
+
+      if (canCompareLong) {
+        const netA = computeNetworkMetrics(waveA);
+        const netB = computeNetworkMetrics(waveB);
+
+        longNetRows = ARS_DIMENSIONS.map(dim => {
+          const vecA = activeCodes.map(c => netA[dim.key].normIn[c]);
+          const vecB = activeCodes.map(c => netB[dim.key].normIn[c]);
+          const wil = StatsEngine.wilcoxonSignedRankTieCorrected(vecA, vecB);
+          const jacEdges = StatsEngine.jaccard(
+            netA[dim.key].edges.map(e => `${e.from}->${e.to}`),
+            netB[dim.key].edges.map(e => `${e.from}->${e.to}`)
+          );
+          const jacTop3 = StatsEngine.jaccard(netA[dim.key].top3Codes, netB[dim.key].top3Codes);
+
+          suite.push({
+            hyp: "H4 (Long.)",
+            label: `Estabilidad Centralidad ${dim.shortLabel}: ${waveA.id} vs. ${waveB.id} (Wilcoxon pareado)`,
+            stat: `W=${wil.W}, Z=${wil.Z.toFixed(2)}`,
+            pRaw: wil.p,
+            n: activeCodes.length
+          });
+
+          return { dim, wil, jacEdges, jacTop3 };
+        });
+
+        const yseqA = computeYSEQMetrics(waveA);
+        const yseqB = computeYSEQMetrics(waveB);
+        const pTaskA = [], pTaskB = [], pSocA = [], pSocB = [];
+        activeCodes.forEach(c => {
+          const tA = yseqA.perCode[c]?.taskMean, tB = yseqB.perCode[c]?.taskMean;
+          if (typeof tA === "number" && typeof tB === "number") { pTaskA.push(tA); pTaskB.push(tB); }
+          const sA = yseqA.perCode[c]?.socialMean, sB = yseqB.perCode[c]?.socialMean;
+          if (typeof sA === "number" && typeof sB === "number") { pSocA.push(sA); pSocB.push(sB); }
+        });
+
+        const wilT = StatsEngine.wilcoxonSignedRankTieCorrected(pTaskA, pTaskB);
+        const wilS = StatsEngine.wilcoxonSignedRankTieCorrected(pSocA, pSocB);
+        if (pTaskA.length >= 3) {
+          suite.push({
+            hyp: "H4 (YSEQ)",
+            label: `Evolución Pareada YSEQ-S Tarea (${waveA.id} vs. ${waveB.id})`,
+            stat: `W=${wilT.W}, Z=${wilT.Z.toFixed(2)}`,
+            pRaw: wilT.p,
+            n: pTaskA.length
+          });
+        }
+        if (pSocA.length >= 3) {
+          suite.push({
+            hyp: "H4 (YSEQ)",
+            label: `Evolución Pareada YSEQ-S Social (${waveA.id} vs. ${waveB.id})`,
+            stat: `W=${wilS.W}, Z=${wilS.Z.toFixed(2)}`,
+            pRaw: wilS.p,
+            n: pSocA.length
+          });
+        }
+
+        longYSEQ = {
+          taskA: StatsEngine.meanAndSD(pTaskA),
+          taskB: StatsEngine.meanAndSD(pTaskB),
+          wilT,
+          socA: StatsEngine.meanAndSD(pSocA),
+          socB: StatsEngine.meanAndSD(pSocB),
+          wilS
+        };
+      }
+
+      const qVals = StatsEngine.benjaminiHochberg(suite.map(s => s.pRaw));
+      suite.forEach((s, i) => { s.qFDR = qVals[i]; });
+
+      const captains = activePlayers
+        .filter(p => p.captainRank > 0)
+        .sort((a, b) => a.captainRank - b.captainRank);
+
+      return `
+        ${renderWaveStrip()}
+
+        <!-- DESCRIPTIVOS PSICOMÉTRICOS YSEQ-S -->
+        <div class="grid-3">
+          <div class="card">
+            <div style="font-size:0.7rem;font-weight:800;text-transform:uppercase;color:var(--segre-text-muted)">Cohesión de Tarea (Ítems 1–8)</div>
+            <div style="margin-top:8px;display:flex;align-items:baseline;gap:10px">
+              <span class="mono font-black" style="font-size:1.75rem">${yseq.taskStats.mean !== null ? yseq.taskStats.mean.toFixed(2) : "—"}</span>
+              <span class="mono" style="font-size:0.8rem;color:var(--segre-text-secondary)">DT = ${yseq.taskStats.sd !== null ? yseq.taskStats.sd.toFixed(2) : "—"} (n=${yseq.taskStats.n})</span>
+            </div>
+            <div class="mono" style="margin-top:6px;font-size:0.76rem;font-weight:800;color:var(--segre-red)">
+              α Cronbach (casos completos n=${yseq.nCompleteTask}): ${yseq.alphaTask !== null ? yseq.alphaTask.toFixed(3) : "N/D (<3 completos)"}
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.7rem;font-weight:800;text-transform:uppercase;color:var(--segre-text-muted)">Cohesión Social (Ítems 11–18)</div>
+            <div style="margin-top:8px;display:flex;align-items:baseline;gap:10px">
+              <span class="mono font-black" style="font-size:1.75rem">${yseq.socialStats.mean !== null ? yseq.socialStats.mean.toFixed(2) : "—"}</span>
+              <span class="mono" style="font-size:0.8rem;color:var(--segre-text-secondary)">DT = ${yseq.socialStats.sd !== null ? yseq.socialStats.sd.toFixed(2) : "—"} (n=${yseq.socialStats.n})</span>
+            </div>
+            <div class="mono" style="margin-top:6px;font-size:0.76rem;font-weight:800;color:var(--segre-red)">
+              α Cronbach (casos completos n=${yseq.nCompleteSocial}): ${yseq.alphaSocial !== null ? yseq.alphaSocial.toFixed(3) : "N/D (<3 completos)"}
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.7rem;font-weight:800;text-transform:uppercase;color:var(--segre-text-muted)">Control Espurio (Ítems 9 y 10)</div>
+            <div style="margin-top:8px;display:flex;align-items:baseline;gap:10px">
+              <span class="mono font-black" style="font-size:1.75rem;color:${yseq.spuriousAlerts.length > 0 ? "var(--segre-red)" : "var(--segre-black)"}">${yseq.spuriousAlerts.length}</span>
+              <span style="font-size:0.8rem;font-weight:700;color:var(--segre-text-secondary)">alertas de consistencia</span>
+            </div>
+            <div style="margin-top:6px;font-size:0.74rem;color:var(--segre-text-muted)">
+              Cálculo solo con ≥ 75 % respondido (≥ 6/8 ítems). Cero imputación con 5.
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA INDIVIDUAL YSEQ-S -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Puntuaciones Individuales YSEQ-S (${escapeHTML(wave.label)})</h2>
+              <p class="card-subtitle">Validación española de López-Gajardo et al. (2022). Los ítems marcados como «Prefiero no contestar» no se imputan.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Participante</th>
+                  <th class="text-center">Ítems Tarea (1–8)</th>
+                  <th class="text-center">Media Tarea</th>
+                  <th class="text-center">Ítems Social (11–18)</th>
+                  <th class="text-center">Media Social</th>
+                  <th class="text-center">Control 9 / 10</th>
+                  <th class="text-center">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${activePlayers.map(pl => {
+                  const p = yseq.perCode[pl.code];
+                  const label = formatResearchNodeLabel(pl, true);
+                  if (!p) {
+                    return `
+                      <tr>
+                        <td class="mono font-bold">${escapeHTML(label)}</td>
+                        <td colspan="6" class="text-center" style="color:var(--segre-text-muted)">Sin cuestionario registrado en ${escapeHTML(wave.id)}</td>
+                      </tr>
+                    `;
+                  }
+                  return `
+                    <tr>
+                      <td class="mono font-bold">${escapeHTML(label)}</td>
+                      <td class="mono text-center">${p.taskCount}/8</td>
+                      <td class="mono text-center font-bold">${p.taskMean !== null ? p.taskMean.toFixed(2) : "N/D (<75%)"}</td>
+                      <td class="mono text-center">${p.socialCount}/8</td>
+                      <td class="mono text-center font-bold">${p.socialMean !== null ? p.socialMean.toFixed(2) : "N/D (<75%)"}</td>
+                      <td class="mono text-center">${p.v9 ?? "—"} / ${p.v10 ?? "—"}</td>
+                      <td class="text-center">
+                        ${p.isAcquiescent
+                          ? `<span class="pill pill-red">Revisar ítems 9–10</span>`
+                          : `<span class="pill pill-black">Válido</span>`}
+                      </td>
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- H1: ANÁLISIS DESCRIPTIVO POSICIONAL DE CAPITANES FORMALES -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">H1 · Liderazgo Formal (Capitanía) vs. Liderazgo Informal (${escapeHTML(wave.label)})</h2>
+              <p class="card-subtitle">Análisis descriptivo posicional (rango medio y percentil en cada red) de los jugadores con brazalete oficial.</p>
+            </div>
+          </div>
+
+          ${!open ? `
+            <div class="notice notice-red">
+              <div>
+                <strong>Protegido por Doble Ciego:</strong> El puesto exacto y percentil de los capitanes formales en cada red se revelará automáticamente al abrir el <strong>Sobre Cerrado</strong> (Pestaña 5) una vez cerradas todas las oleadas.
+              </div>
+            </div>
+          ` : captains.length === 0 ? `
+            <div class="notice notice-zinc">
+              <div>No hay jugadores asignados como capitanes formales en la Pestaña 1.</div>
+            </div>
+          ` : `
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Capitanía</th>
+                    <th>Código · Jugador</th>
+                    <th class="text-center">Tarea: Rango Medio (Percentil)</th>
+                    <th class="text-center">Motivacional: Rango Medio (Percentil)</th>
+                    <th class="text-center">Social: Rango Medio (Percentil)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${captains.map(cap => `
+                    <tr>
+                      <td><span class="pill pill-red">${cap.captainRank}.º Capitán</span></td>
+                      <td class="font-bold"><span class="mono">${escapeHTML(cap.code)}</span> · ${escapeHTML(cap.fullName)}</td>
+                      <td class="mono text-center font-bold">${net.task.rankMap[cap.code]}º (P${net.task.percentileMap[cap.code]}) · In:${net.task.inDeg[cap.code]}</td>
+                      <td class="mono text-center font-bold">${net.motivational.rankMap[cap.code]}º (P${net.motivational.percentileMap[cap.code]}) · In:${net.motivational.inDeg[cap.code]}</td>
+                      <td class="mono text-center font-bold">${net.social.rankMap[cap.code]}º (P${net.social.percentileMap[cap.code]}) · In:${net.social.inDeg[cap.code]}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          `}
+        </div>
+
+        <!-- H4 LONGITUDINAL: WILCOXON PAREADO + JACCARD + YSEQ PAREADO -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">H4 · Estabilidad Longitudinal entre Oleadas (Wilcoxon Pareado &amp; Jaccard)</h2>
+              <p class="card-subtitle">Prueba pareada de Wilcoxon con corrección por empates y evolución del YSEQ-S sobre los mismos jugadores evaluados en ambas oleadas.</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <select id="sel-long-a" style="width:auto;font-weight:700">
+                ${AppState.data.waves.map(w => `<option value="${w.id}" ${w.id === waveA.id ? "selected" : ""}>${w.id}</option>`).join("")}
+              </select>
+              <span style="font-weight:800">vs.</span>
+              <select id="sel-long-b" style="width:auto;font-weight:700">
+                ${AppState.data.waves.map(w => `<option value="${w.id}" ${w.id === waveB.id ? "selected" : ""}>${w.id}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+
+          ${!canCompareLong ? `
+            <div class="notice notice-zinc">
+              <div>Selecciona dos oleadas distintas con al menos 3 respuestas cada una para calcular la estabilidad longitudinal pareada.</div>
+            </div>
+          ` : `
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Dimensión de Red</th>
+                      <th class="text-center">Wilcoxon W</th>
+                      <th class="text-center">Z (Corr. Empates)</th>
+                      <th class="text-center">p-valor</th>
+                      <th class="text-center">Efecto r</th>
+                      <th class="text-center">Jaccard Aristas</th>
+                      <th class="text-center">Jaccard Top 3</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${longNetRows.map(r => `
+                      <tr>
+                        <td class="font-bold">${escapeHTML(r.dim.label)}</td>
+                        <td class="mono text-center">${r.wil.W}</td>
+                        <td class="mono text-center">${r.wil.Z.toFixed(2)}</td>
+                        <td class="mono text-center">${r.wil.p.toFixed(4)}</td>
+                        <td class="mono text-center">${r.wil.r.toFixed(2)}</td>
+                        <td class="mono text-center font-bold">${r.jacEdges.toFixed(3)}</td>
+                        <td class="mono text-center font-bold" style="color:var(--segre-red)">${r.jacTop3.toFixed(3)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+
+              ${longYSEQ ? `
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Dimensión YSEQ-S (Sujetos Pareados)</th>
+                        <th class="text-center">n Pareado</th>
+                        <th class="text-center">Media ± DT (${waveA.id})</th>
+                        <th class="text-center">Media ± DT (${waveB.id})</th>
+                        <th class="text-center">Wilcoxon Z / p</th>
+                        <th class="text-center">Efecto r</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="font-bold">Cohesión de Tarea (Ítems 1–8)</td>
+                        <td class="mono text-center">${longYSEQ.taskA.n}</td>
+                        <td class="mono text-center">${longYSEQ.taskA.mean ?? "—"} ± ${longYSEQ.taskA.sd ?? "—"}</td>
+                        <td class="mono text-center">${longYSEQ.taskB.mean ?? "—"} ± ${longYSEQ.taskB.sd ?? "—"}</td>
+                        <td class="mono text-center">${longYSEQ.wilT.Z.toFixed(2)} / ${longYSEQ.wilT.p.toFixed(4)}</td>
+                        <td class="mono text-center">${longYSEQ.wilT.r.toFixed(2)}</td>
+                      </tr>
+                      <tr>
+                        <td class="font-bold">Cohesión Social (Ítems 11–18)</td>
+                        <td class="mono text-center">${longYSEQ.socA.n}</td>
+                        <td class="mono text-center">${longYSEQ.socA.mean ?? "—"} ± ${longYSEQ.socA.sd ?? "—"}</td>
+                        <td class="mono text-center">${longYSEQ.socB.mean ?? "—"} ± ${longYSEQ.socB.sd ?? "—"}</td>
+                        <td class="mono text-center">${longYSEQ.wilS.Z.toFixed(2)} / ${longYSEQ.wilS.p.toFixed(4)}</td>
+                        <td class="mono text-center">${longYSEQ.wilS.r.toFixed(2)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ` : ""}
+            </div>
+          `}
+        </div>
+
+        <!-- TABLA GLOBAL DE CONTRASTES INFERENCIALES CON CORRECCIÓN BENJAMINI-HOCHBERG (BH-FDR) -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Contrastes Inferenciales (H2, H3, H4) y Ajuste Global Benjamini-Hochberg (BH-FDR)</h2>
+              <p class="card-subtitle">Correlaciones Spearman ρ mediante 4.000 permutaciones Monte Carlo con semilla determinista Mulberry32 (${MONTE_CARLO_SEED}).</p>
+            </div>
+          </div>
+
+          ${suite.length === 0 ? `
+            <div class="notice notice-zinc">
+              <div>Se necesitan al menos 4 participantes con datos válidos en ${escapeHTML(wave.label)} para ejecutar las 4.000 permutaciones Monte Carlo.</div>
+            </div>
+          ` : `
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Hipótesis</th>
+                    <th>Contraste Evaluado</th>
+                    <th class="text-center">n</th>
+                    <th class="text-center">Estadístico</th>
+                    <th class="text-center">p-valor (Monte Carlo / Wilcoxon)</th>
+                    <th class="text-center">q-valor (BH-FDR Global)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${suite.map(r => `
+                    <tr>
+                      <td><span class="pill pill-neutral mono">${escapeHTML(r.hyp)}</span></td>
+                      <td class="font-bold">${escapeHTML(r.label)}</td>
+                      <td class="mono text-center">${r.n}</td>
+                      <td class="mono text-center font-bold">${escapeHTML(r.stat)}</td>
+                      <td class="mono text-center">${r.pRaw.toFixed(4)}</td>
+                      <td class="mono text-center font-black" style="color:${r.qFDR < 0.05 ? "var(--segre-red)" : "var(--segre-black)"}">${r.qFDR.toFixed(4)}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 5: SOBRE CERRADO (BLOQUEADO HASTA CERRAR TODAS LAS OLEADAS)
+       -------------------------------------------------------------------------- */
+    function renderSealedEnvelopeTab() {
+      const open = isEnvelopeOpen();
+      const allWavesClosed = canOpenSealedEnvelope();
+      const activePlayers = getActivePlayers();
+
+      return `
+        <div class="card" style="border:2px solid ${open ? "var(--segre-red)" : "var(--segre-black)"}">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Sobre Cerrado del Estudio (${open ? "ABIERTO DEFINITIVO · IDENTIDADES REVELADAS" : "SELLADO · DOBLE CIEGO ACTIVO"})</h2>
+              <p class="card-subtitle">
+                Garantía metodológica del software: la tabla de correspondencia (<span class="mono">Código Jxx ↔ Jugador</span>) permanece bloqueada hasta que TODAS las oleadas (${AppState.data.waves.map(w => w.id).join(", ")}) estén marcadas como <strong>«Oleada Cerrada ✓»</strong>.
+              </p>
+            </div>
+            <div>
+              ${!open ? `
+                <button type="button" class="btn btn-red" id="btn-open-sealed-envelope" ${!allWavesClosed ? "disabled" : ""}>
+                  ${allWavesClosed ? "Abrir Sobre Cerrado Definitivo" : "Bloqueado (Cierra todas las oleadas)"}
+                </button>
+              ` : `
+                <span class="pill pill-red">Sobre Cerrado Abierto ✓</span>
+              `}
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+            ${AppState.data.waves.map(w => `
+              <span class="pill ${w.status === "closed" ? "pill-black" : "pill-white-outline"}">
+                ${escapeHTML(w.id)}: ${w.status === "closed" ? "Oleada Cerrada ✓" : "Abierta (Pendiente de cierre)"}
+              </span>
+            `).join("")}
+          </div>
+
+          ${!open ? `
+            <div class="notice notice-zinc">
+              <div>
+                <strong>Protocolo de Doble Ciego en curso:</strong> Mientras exista alguna oleada abierta o en preparación, los sociogramas, tablas estadísticas y exportaciones Gephi/CSV muestran únicamente los códigos aleatorios <span class="mono">J01–J50</span>. Cierra todas las oleadas en la <strong>Pestaña 2 (Oleadas y QR)</strong> al finalizar la recogida de datos para habilitar la apertura definitiva.
+              </div>
+            </div>
+          ` : `
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="notice notice-red">
+                <div>
+                  <strong>Sobre Cerrado Abierto Definitivo:</strong> Todos los sociogramas (Pestaña 3), tablas psicométricas/H1–H4 (Pestaña 4) y exportaciones CSV/Gephi muestran ahora los nombres reales junto a cada código aleatorio.
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Código Estudio</th>
+                      <th>Nombre y Apellidos</th>
+                      <th>Nombre en Encuesta</th>
+                      <th class="text-center">Dorsal</th>
+                      <th class="text-center">Capitanía Formal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${[...activePlayers].sort((a, b) => a.code.localeCompare(b.code)).map(pl => `
+                      <tr>
+                        <td class="mono font-black" style="color:var(--segre-red)">${escapeHTML(pl.code)}</td>
+                        <td class="font-bold">${escapeHTML(pl.fullName)}</td>
+                        <td>${escapeHTML(pl.displayName)}</td>
+                        <td class="mono text-center">${pl.dorsal ? escapeHTML(pl.dorsal) : "—"}</td>
+                        <td class="text-center">
+                          ${pl.captainRank > 0
+                            ? `<span class="pill pill-red">${pl.captainRank}.º Capitán</span>`
+                            : `<span style="color:var(--segre-text-muted)">—</span>`}
+                        </td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    /* --------------------------------------------------------------------------
+       PESTAÑA 6: CONFIGURACIÓN (TÍTULO, SUBTÍTULO, INSIGNIA Y RESPALDO JSON)
+       -------------------------------------------------------------------------- */
+    function renderConfigurationTab() {
+      const cfg = AppState.configDraft || { ...AppState.data.config };
+
+      return `
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Personalización de Encabezado e Identidad del Estudio</h2>
+                <p class="card-subtitle">Edita el título principal, el subtítulo y la etiqueta institucional de la cabecera.</p>
+              </div>
+            </div>
+
+            <form id="form-app-config" style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label class="field-label">Título Principal de la Aplicación</label>
+                <input type="text" id="cfg-title" value="${escapeHTML(cfg.title)}" required />
+              </div>
+
+              <div>
+                <label class="field-label">Subtítulo de la Aplicación</label>
+                <input type="text" id="cfg-subtitle" value="${escapeHTML(cfg.subtitle)}" required />
+              </div>
+
+              <div>
+                <label class="field-label">Texto de Insignia / Equipo</label>
+                <input type="text" id="cfg-badge" value="${escapeHTML(cfg.clubBadge)}" required />
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:6px">
+                <button type="submit" class="btn btn-red">Guardar Configuración</button>
+                <button type="button" class="btn btn-outline-black" id="btn-reset-default-config">Restaurar Valores por Defecto</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Copia de Seguridad y Transferencia Local (.json)</h2>
+                <p class="card-subtitle">Exporta o restaura el estado completo del estudio (plantilla, oleadas, respuestas y predicciones selladas).</p>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="notice notice-zinc">
+                <div>
+                  <strong>Almacenamiento local seguro:</strong> Todos los datos residen exclusivamente en este navegador sin conexión a servidores externos. Descarga un respaldo JSON tras cerrar cada oleada para conservar una copia de seguridad en tu ordenador.
+                </div>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:10px">
+                <button type="button" class="btn btn-black" id="btn-backup-json">Descargar Respaldo JSON</button>
+                <label class="btn btn-outline-red" style="cursor:pointer">
+                  Restaurar desde Archivo JSON
+                  <input type="file" id="inp-restore-json" accept=".json" style="display:none" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       9. RENDERIZADO PRINCIPAL Y DELEGACIÓN DE EVENTOS
+       ========================================================================== */
+    function render() {
+      const root = document.getElementById("app");
+      const open = isEnvelopeOpen();
+      const cfg = AppState.data.config || DEFAULT_APP_CONFIG;
+
+      let content = "";
+      if (isMobileUrlMode || AppState.activeTab === "waves") {
+        content = renderWavesAndSurveyTab();
+      } else if (AppState.activeTab === "staff") {
+        content = renderStaffTab();
+      } else if (AppState.activeTab === "sociograms") {
+        content = renderSociogramsTab();
+      } else if (AppState.activeTab === "psych") {
+        content = renderPsychometricsAndStatsTab();
+      } else if (AppState.activeTab === "envelope") {
+        content = renderSealedEnvelopeTab();
+      } else if (AppState.activeTab === "config") {
+        content = renderConfigurationTab();
+      }
+
+      root.innerHTML = `
+        <header class="app-header">
+          <div class="header-inner">
+            <div>
+              <div class="badge-row">
+                <span class="pill pill-red">${escapeHTML(cfg.clubBadge)}</span>
+                <span class="pill pill-black">
+                  ${open ? "SOBRE CERRADO ABIERTO" : "DOBLE CIEGO ACTIVO (J01–J50)"}
+                </span>
+              </div>
+              <h1 class="brand-title">${escapeHTML(cfg.title)}</h1>
+              <p class="brand-sub">${escapeHTML(cfg.subtitle)}</p>
+            </div>
+          </div>
+        </header>
+
+        ${!isMobileUrlMode ? `
+          <nav class="nav-bar">
+            <div class="nav-inner">
+              ${[
+                { id: "staff", label: "1. Plantilla y Entrenadores" },
+                { id: "waves", label: "2. Oleadas y QR" },
+                { id: "sociograms", label: "3. Sociogramas" },
+                { id: "psych", label: "4. YSEQ-S y Estadística" },
+                { id: "envelope", label: "5. Sobre Cerrado" },
+                { id: "config", label: "6. Configuración" }
+              ].map(t => `
+                <button type="button" class="tab-btn ${AppState.activeTab === t.id ? "active" : ""}" data-nav-tab="${t.id}">
+                  ${escapeHTML(t.label)}
+                </button>
+              `).join("")}
+            </div>
+          </nav>
+        ` : ""}
+
+        <main class="main-container">
+          ${content}
+        </main>
+
+        ${AppState.toast ? `
+          <div class="toast-banner" style="background:${AppState.toast.type === "red" ? "#dc2626" : "#090d16"}">
+            <span>${escapeHTML(AppState.toast.msg)}</span>
+            <button type="button" id="btn-toast-close" style="background:none;border:none;color:#ffffff;font-weight:800;cursor:pointer">✕</button>
+          </div>
+        ` : ""}
+
+        ${AppState.confirmDialog ? `
+          <div class="modal-backdrop">
+            <div class="modal-dialog">
+              <h3 style="margin:0 0 8px 0;font-size:1rem;font-weight:800">${escapeHTML(AppState.confirmDialog.title)}</h3>
+              <p style="margin:0 0 18px 0;font-size:0.82rem;color:var(--segre-text-secondary)">${escapeHTML(AppState.confirmDialog.message)}</p>
+              <div style="display:flex;justify-content:flex-end;gap:8px">
+                <button type="button" class="btn btn-outline-black" id="btn-modal-cancel">Cancelar</button>
+                <button type="button" class="btn ${AppState.confirmDialog.isRed ? "btn-red" : "btn-black"}" id="btn-modal-confirm">${escapeHTML(AppState.confirmDialog.confirmLabel)}</button>
+              </div>
+            </div>
+          </div>
+        ` : ""}
+      `;
+
+      bindEvents();
+    }
+
+    function bindEvents() {
+      // Navegación 6 pestañas
+      document.querySelectorAll("[data-nav-tab]").forEach(btn => {
+        btn.onclick = () => {
+          AppState.activeTab = btn.getAttribute("data-nav-tab");
+          if (AppState.activeTab === "config") {
+            AppState.configDraft = { ...AppState.data.config };
+          }
+          render();
+        };
+      });
+
+      // Selector de oleada activa
+      document.querySelectorAll("[data-select-wave]").forEach(btn => {
+        btn.onclick = () => {
+          AppState.selectedWaveId = btn.getAttribute("data-select-wave");
+          AppState.surveySession.waveId = AppState.selectedWaveId;
+          AppState.selectedGraphNode = null;
+          render();
+        };
+      });
+
+      // Exportaciones globales de barra
+      const btnGephi = document.getElementById("btn-export-gephi");
+      if (btnGephi) btnGephi.onclick = () => exportGephiGoldenStandard(getActiveWave());
+      const btnCsv = document.getElementById("btn-export-csv");
+      if (btnCsv) btnCsv.onclick = () => exportFullStatisticalTable(getActiveWave(), ",");
+      const btnTsv = document.getElementById("btn-export-tsv");
+      if (btnTsv) btnTsv.onclick = () => exportFullStatisticalTable(getActiveWave(), "\t");
+
+      // Pestaña 1: Plantilla y Entrenadores
+      const formAddPlayer = document.getElementById("form-add-player");
+      if (formAddPlayer) {
+        formAddPlayer.onsubmit = (e) => {
+          e.preventDefault();
+          const fullName = document.getElementById("inp-add-fullname").value.trim();
+          const displayName = document.getElementById("inp-add-displayname").value.trim();
+          const dorsal = document.getElementById("inp-add-dorsal").value.trim();
+          if (!fullName || !displayName) return;
+          if (getActivePlayers().length >= MAX_PLAYERS) {
+            showToast(`Máximo de ${MAX_PLAYERS} jugadores alcanzado.`, "red");
+            return;
+          }
+          const usedAndRetired = new Set([
+            ...AppState.data.players.map(p => p.code),
+            ...(AppState.data.retiredCodes || [])
+          ]);
+          const freeCodes = ALL_CODE_POOL.filter(c => !usedAndRetired.has(c));
+          if (freeCodes.length === 0) {
+            showToast("No quedan códigos aleatorios disponibles en J01–J50.", "red");
+            return;
+          }
+          const assignedCode = cryptoShuffle(freeCodes)[0];
+          AppState.data.players.push({
+            id: `P_${Date.now()}`,
+            fullName,
+            displayName,
+            dorsal,
+            dob: "",
+            code: assignedCode,
+            captainRank: 0,
+            active: true
+          });
+          persistState();
+          showToast(`Jugador «${fullName}» añadido con código interno oculto.`, "black");
+          render();
+        };
+      }
+
+      document.querySelectorAll("[data-edit-full]").forEach(inp => {
+        inp.onchange = () => {
+          const id = inp.getAttribute("data-edit-full");
+          const val = inp.value.trim();
+          if (!val) return;
+          AppState.data.players = AppState.data.players.map(p => p.id === id ? { ...p, fullName: val } : p);
+          persistState();
+        };
+      });
+
+      document.querySelectorAll("[data-edit-display]").forEach(inp => {
+        inp.onchange = () => {
+          const id = inp.getAttribute("data-edit-display");
+          const val = inp.value.trim();
+          if (!val) return;
+          AppState.data.players = AppState.data.players.map(p => p.id === id ? { ...p, displayName: val } : p);
+          persistState();
+        };
+      });
+
+      document.querySelectorAll("[data-edit-dorsal]").forEach(inp => {
+        inp.onchange = () => {
+          const id = inp.getAttribute("data-edit-dorsal");
+          const val = inp.value.trim();
+          AppState.data.players = AppState.data.players.map(p => p.id === id ? { ...p, dorsal: val } : p);
+          persistState();
+        };
+      });
+
+      document.querySelectorAll("[data-edit-captain]").forEach(sel => {
+        sel.onchange = () => {
+          const id = sel.getAttribute("data-edit-captain");
+          const rank = Number(sel.value);
+          if (rank > 0 && AppState.data.players.some(p => p.active && p.id !== id && p.captainRank === rank)) {
+            showToast(`Ya existe otro jugador asignado como ${rank}.º Capitán.`, "red");
+            render();
+            return;
+          }
+          AppState.data.players = AppState.data.players.map(p => p.id === id ? { ...p, captainRank: rank } : p);
+          persistState();
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-retire-id]").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.getAttribute("data-retire-id");
+          const pl = AppState.data.players.find(p => p.id === id);
+          if (!pl) return;
+          openConfirm(
+            "Confirmar baja definitiva",
+            `¿Dar de baja a ${pl.fullName}? Su código aleatorio interno quedará retirado permanentemente y nunca será reasignado a un jugador nuevo.`,
+            () => {
+              AppState.data.players = AppState.data.players.map(p => p.id === id ? { ...p, active: false, captainRank: 0 } : p);
+              if (!AppState.data.retiredCodes.includes(pl.code)) {
+                AppState.data.retiredCodes.push(pl.code);
+              }
+              persistState();
+              showToast(`Baja definitiva registrada para ${pl.fullName}.`, "black");
+              render();
+            },
+            "Confirmar Baja",
+            true
+          );
+        };
+      });
+
+      // Predicciones ciegas entrenadores
+      document.querySelectorAll("[data-coach-tab]").forEach(btn => {
+        btn.onclick = () => {
+          AppState.coachDraft.coachNum = Number(btn.getAttribute("data-coach-tab"));
+          AppState.coachDraft.task = [];
+          AppState.coachDraft.motivational = [];
+          AppState.coachDraft.social = [];
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-coach-pick]").forEach(btn => {
+        btn.onclick = () => {
+          const [dimKey, pid] = btn.getAttribute("data-coach-pick").split(":");
+          const cur = AppState.coachDraft[dimKey] || [];
+          if (cur.includes(pid)) {
+            AppState.coachDraft[dimKey] = cur.filter(x => x !== pid);
+          } else if (cur.length < 3) {
+            AppState.coachDraft[dimKey] = [...cur, pid];
+          }
+          render();
+        };
+      });
+
+      const btnSealCoach = document.getElementById("btn-seal-coach-pred");
+      if (btnSealCoach) {
+        btnSealCoach.onclick = async () => {
+          const wave = getActiveWave();
+          const cNum = AppState.coachDraft.coachNum;
+          const payload = {
+            task: [...AppState.coachDraft.task],
+            motivational: [...AppState.coachDraft.motivational],
+            social: [...AppState.coachDraft.social],
+            submittedAt: new Date().toISOString()
+          };
+          payload.sha256 = await computeSHA256(JSON.stringify({ waveId: wave.id, cNum, ...payload }));
+          AppState.data.waves = AppState.data.waves.map(w => {
+            if (w.id !== wave.id) return w;
+            return cNum === 1 ? { ...w, coach1Blind: payload } : { ...w, coach2Blind: payload };
+          });
+          AppState.coachDraft.task = [];
+          AppState.coachDraft.motivational = [];
+          AppState.coachDraft.social = [];
+          persistState();
+          showToast(`Predicción ciega del ${cNum === 1 ? "1.º" : "2.º"} Entrenador sellada con SHA-256.`, "black");
+          render();
+        };
+      }
+
+      // Consentimiento ampliado y variables ecológicas
+      const chkConsent = document.getElementById("chk-expanded-consent");
+      if (chkConsent) {
+        chkConsent.onchange = () => {
+          AppState.data.expandedConsentVerified = chkConsent.checked;
+          persistState();
+          render();
+        };
+      }
+
+      document.querySelectorAll("[data-eco]").forEach(inp => {
+        inp.onchange = () => {
+          const [field, pid] = inp.getAttribute("data-eco").split(":");
+          const val = inp.value === "" ? "" : Math.max(0, Number(inp.value) || 0);
+          const wave = getActiveWave();
+          AppState.data.waves = AppState.data.waves.map(w => {
+            if (w.id !== wave.id) return w;
+            const prev = w.ecological?.[pid] || { minutes: "", starts: "", passes: "" };
+            return { ...w, ecological: { ...w.ecological, [pid]: { ...prev, [field]: val } } };
+          });
+          persistState();
+          render();
+        };
+      });
+
+      // Pestaña 2: Oleadas y QR (Edición directa de Denominación y Momento)
+      document.querySelectorAll("[data-edit-wave-label]").forEach(inp => {
+        inp.oninput = () => {
+          const wId = inp.getAttribute("data-edit-wave-label");
+          AppState.data.waves = AppState.data.waves.map(w => w.id === wId ? { ...w, label: inp.value } : w);
+          persistState();
+        };
+      });
+
+      document.querySelectorAll("[data-edit-wave-period]").forEach(inp => {
+        inp.oninput = () => {
+          const wId = inp.getAttribute("data-edit-wave-period");
+          AppState.data.waves = AppState.data.waves.map(w => w.id === wId ? { ...w, period: inp.value } : w);
+          persistState();
+        };
+      });
+
+      const btnAddWave = document.getElementById("btn-add-wave");
+      if (btnAddWave) {
+        btnAddWave.onclick = () => {
+          const existingNums = AppState.data.waves.map(w => Number(String(w.id).replace(/\D/g, "")) || 0);
+          const nextNum = Math.max(AppState.data.nextWaveSeq || 4, ...existingNums) + (existingNums.includes(AppState.data.nextWaveSeq) ? 1 : 0);
+          const id = `T${nextNum}`;
+          AppState.data.nextWaveSeq = nextNum + 1;
+          AppState.data.waves.push({
+            id,
+            label: `Oleada ${id} — Toma Adicional`,
+            period: "Fecha / Momento a definir",
+            status: "open",
+            coach1Blind: null,
+            coach2Blind: null,
+            responses: {},
+            ecological: {}
+          });
+          AppState.data.envelopeOpened = false;
+          AppState.selectedWaveId = id;
+          persistState();
+          showToast(`Oleada ${id} añadida. Puedes editar su denominación y momento directamente.`, "black");
+          render();
+        };
+      }
+
+      document.querySelectorAll("[data-toggle-wave-status]").forEach(btn => {
+        btn.onclick = () => {
+          const wId = btn.getAttribute("data-toggle-wave-status");
+          AppState.data.waves = AppState.data.waves.map(w => {
+            if (w.id !== wId) return w;
+            const nextStatus = w.status === "closed" ? "open" : "closed";
+            return { ...w, status: nextStatus };
+          });
+          if (!canOpenSealedEnvelope()) AppState.data.envelopeOpened = false;
+          persistState();
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-gephi-wave]").forEach(btn => {
+        btn.onclick = () => {
+          const wId = btn.getAttribute("data-gephi-wave");
+          const w = AppState.data.waves.find(x => x.id === wId);
+          if (w) exportGephiGoldenStandard(w);
+        };
+      });
+
+      document.querySelectorAll("[data-del-wave]").forEach(btn => {
+        btn.onclick = () => {
+          const wId = btn.getAttribute("data-del-wave");
+          openConfirm(
+            `Eliminar oleada ${wId}`,
+            `¿Seguro que deseas eliminar ${wId}? Los identificadores futuros no reutilizarán ${wId}.`,
+            () => {
+              AppState.data.waves = AppState.data.waves.filter(w => w.id !== wId);
+              if (AppState.selectedWaveId === wId) AppState.selectedWaveId = AppState.data.waves[0]?.id || "T1";
+              persistState();
+              render();
+            }
+          );
+        };
+      });
+
+      // QR local
+      const inpQrBase = document.getElementById("inp-qr-base-url");
+      if (inpQrBase) {
+        inpQrBase.oninput = () => {
+          AppState.qrBaseUrlInput = inpQrBase.value;
+          const wave = getActiveWave();
+          const clean = AppState.qrBaseUrlInput.trim().replace(/\/+$/, "");
+          const url = clean
+            ? `${clean}?modo=encuesta&w=${encodeURIComponent(wave.id)}`
+            : `${window.location.origin}${window.location.pathname}?modo=encuesta&w=${encodeURIComponent(wave.id)}`;
+          const card = inpQrBase.closest(".card");
+          if (card) {
+            const svgWrap = card.querySelector("svg")?.parentElement;
+            if (svgWrap) svgWrap.innerHTML = OfflineQR.toSVG(url, 160);
+            const spanUrl = document.getElementById("lbl-qr-scan-url");
+            if (spanUrl) spanUrl.textContent = url;
+          }
+        };
+      }
+
+      const btnCopyScanUrl = document.getElementById("btn-copy-scan-url");
+      if (btnCopyScanUrl) {
+        btnCopyScanUrl.onclick = () => {
+          const wave = getActiveWave();
+          const clean = AppState.qrBaseUrlInput.trim().replace(/\/+$/, "");
+          const url = clean
+            ? `${clean}?modo=encuesta&w=${encodeURIComponent(wave.id)}`
+            : `${window.location.origin}${window.location.pathname}?modo=encuesta&w=${encodeURIComponent(wave.id)}`;
+          copyTextSafely(url);
+          showToast("Enlace de encuesta copiado al portapapeles.", "black");
+        };
+      }
+
+      document.querySelectorAll("[data-kiosk-wave]").forEach(btn => {
+        btn.onclick = () => {
+          const wId = btn.getAttribute("data-kiosk-wave");
+          AppState.selectedWaveId = wId;
+          AppState.kioskInAppMode = true;
+          AppState.surveySession = {
+            waveId: wId,
+            selectedPlayerId: "",
+            step: 0,
+            task: [],
+            taskNone: false,
+            motivational: [],
+            motivationalNone: false,
+            social: [],
+            socialNone: false,
+            yseq: {},
+            generatedToken: "",
+            receiptHash: "",
+            serverSynced: false
+          };
+          render();
+        };
+      });
+
+      const btnCloseKiosk = document.getElementById("btn-close-kiosk");
+      if (btnCloseKiosk) {
+        btnCloseKiosk.onclick = () => {
+          AppState.kioskInAppMode = false;
+          render();
+        };
+      }
+
+      // Importador de tokens con confirmación antes de sobrescribir
+      const formImportTokens = document.getElementById("form-import-tokens");
+      if (formImportTokens) {
+        formImportTokens.onsubmit = (e) => {
+          e.preventDefault();
+          const rawBox = document.getElementById("txt-import-tokens").value.trim();
+          if (!rawBox) return;
+          const lines = rawBox.split(/\s+/).filter(Boolean);
+          const idToCode = Object.fromEntries(AppState.data.players.map(p => [p.id, p.code]));
+          const nameToCode = Object.fromEntries(AppState.data.players.map(p => [p.displayName.toLowerCase(), p.code]));
+
+          const pendingFresh = [];
+          const pendingOverwrite = [];
+          let invalidCount = 0;
+
+          lines.forEach(tok => {
+            try {
+              const obj = decodeTokenBase64Url(tok);
+              if (!obj || obj.v !== 1 || !obj.w) { invalidCount++; return; }
+              const targetWave = AppState.data.waves.find(w => w.id === obj.w);
+              if (!targetWave) { invalidCount++; return; }
+
+              const senderCode = idToCode[obj.p] || nameToCode[String(obj.n || "").toLowerCase()];
+              if (!senderCode) { invalidCount++; return; }
+
+              const mapList = (arr) => (Array.isArray(arr) ? arr : [])
+                .map(x => idToCode[x] || nameToCode[String(x).toLowerCase()])
+                .filter(c => c && c !== senderCode);
+
+              const record = {
+                waveId: targetWave.id,
+                senderCode,
+                response: {
+                  task: mapList(obj.t),
+                  motivational: mapList(obj.m),
+                  social: mapList(obj.s),
+                  yseq: obj.y || {},
+                  submittedAt: obj.ts || new Date().toISOString(),
+                  sha256: obj.h || ""
+                }
+              };
+
+              if (targetWave.responses && targetWave.responses[senderCode]) {
+                pendingOverwrite.push(record);
+              } else {
+                pendingFresh.push(record);
+              }
+            } catch (_) {
+              invalidCount++;
+            }
+          });
+
+          const applyRecords = (list) => {
+            list.forEach(item => {
+              const w = AppState.data.waves.find(x => x.id === item.waveId);
+              if (w) {
+                w.responses = { ...w.responses, [item.senderCode]: item.response };
+              }
+            });
+            persistState();
+          };
+
+          if (pendingFresh.length > 0) {
+            applyRecords(pendingFresh);
+          }
+          document.getElementById("txt-import-tokens").value = "";
+
+          if (pendingOverwrite.length > 0) {
+            openConfirm(
+              "Respuesta ya registrada en la oleada",
+              `Se han detectado ${pendingOverwrite.length} respuesta(s) de jugador(es) que ya habían respondido en esa oleada. ¿Deseas sobrescribirlas con los nuevos datos?`,
+              () => {
+                applyRecords(pendingOverwrite);
+                showToast(`Importadas ${pendingFresh.length + pendingOverwrite.length} respuestas en total.`, "black");
+                render();
+              },
+              "Sobrescribir Respuestas",
+              true
+            );
+          } else {
+            showToast(
+              `Importación completada: ${pendingFresh.length} respuesta(s) registrada(s)${invalidCount ? `, ${invalidCount} token(s) inválido(s)` : ""}.`,
+              pendingFresh.length > 0 ? "black" : "red"
+            );
+            render();
+          }
+        };
+      }
+
+      // Eventos de Encuesta Móvil / Modo Kiosko
+      const selSurveyPlayer = document.getElementById("sel-survey-player");
+      if (selSurveyPlayer) {
+        selSurveyPlayer.onchange = () => {
+          AppState.surveySession.selectedPlayerId = selSurveyPlayer.value;
+          render();
+        };
+      }
+
+      const btnSurveyStart = document.getElementById("btn-survey-start");
+      if (btnSurveyStart) {
+        btnSurveyStart.onclick = () => {
+          if (!AppState.surveySession.selectedPlayerId) return;
+          AppState.surveySession.step = 1;
+          render();
+        };
+      }
+
+      // Botón explícito "Ninguno"
+      document.querySelectorAll("[data-antipeek-none]").forEach(btn => {
+        btn.onclick = () => {
+          const dimKey = btn.getAttribute("data-antipeek-none");
+          const nextVal = !AppState.surveySession[`${dimKey}None`];
+          AppState.surveySession[`${dimKey}None`] = nextVal;
+          if (nextVal) {
+            AppState.surveySession[dimKey] = [];
+          }
+          render();
+        };
+      });
+
+      // Votación Anti-Peeking ("VOTADO" sustituye al nombre del compañero)
+      document.querySelectorAll("[data-antipeek-vote]").forEach(btn => {
+        btn.onclick = () => {
+          const [dimKey, tmId] = btn.getAttribute("data-antipeek-vote").split(":");
+          const cur = AppState.surveySession[dimKey] || [];
+          if (cur.includes(tmId)) {
+            AppState.surveySession[dimKey] = cur.filter(x => x !== tmId);
+          } else if (cur.length < 3) {
+            AppState.surveySession[`${dimKey}None`] = false;
+            AppState.surveySession[dimKey] = [...cur, tmId];
+          }
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-survey-step]").forEach(btn => {
+        btn.onclick = () => {
+          AppState.surveySession.step = Number(btn.getAttribute("data-survey-step"));
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-yseq-pick]").forEach(btn => {
+        btn.onclick = () => {
+          const [qId, val] = btn.getAttribute("data-yseq-pick").split(":");
+          AppState.surveySession.yseq[Number(qId)] = Number(val);
+          render();
+        };
+      });
+
+      document.querySelectorAll("[data-yseq-optout]").forEach(btn => {
+        btn.onclick = () => {
+          const qId = Number(btn.getAttribute("data-yseq-optout"));
+          AppState.surveySession.yseq[qId] = null;
+          render();
+        };
+      });
+
+      const btnSubmitSurvey = document.getElementById("btn-submit-survey");
+      if (btnSubmitSurvey) {
+        btnSubmitSurvey.onclick = async () => {
+          const s = AppState.surveySession;
+          const wave = AppState.data.waves.find(w => w.id === s.waveId) || getActiveWave();
+          const senderPlayer = AppState.data.players.find(p => p.id === s.selectedPlayerId);
+          if (!senderPlayer) return;
+
+          const ts = new Date().toISOString();
+          const rawPayload = {
+            v: 1,
+            w: wave.id,
+            p: senderPlayer.id,
+            n: senderPlayer.displayName,
+            t: s.taskNone ? [] : [...s.task],
+            m: s.motivationalNone ? [] : [...s.motivational],
+            s: s.socialNone ? [] : [...s.social],
+            y: { ...s.yseq },
+            ts
+          };
+          const hash = await computeSHA256(JSON.stringify(rawPayload));
+          rawPayload.h = hash;
+          const token = encodeTokenBase64Url(rawPayload);
+
+          const finalizeCompletion = (savedLocally) => {
+            copyTextSafely(token);
+            s.generatedToken = token;
+            s.receiptHash = hash;
+            s.serverSynced = savedLocally;
+            s.step = 4 + YSEQ_ITEMS.length;
+            render();
+          };
+
+          // Si se ejecuta en Modo Kiosko dentro del dispositivo anfitrión, guarda directamente (con confirmación si ya existía)
+          if (!isMobileUrlMode && AppState.kioskInAppMode) {
+            const idToCode = Object.fromEntries(AppState.data.players.map(p => [p.id, p.code]));
+            const senderCode = senderPlayer.code;
+            const saveLocalResponse = () => {
+              wave.responses = {
+                ...wave.responses,
+                [senderCode]: {
+                  task: (s.taskNone ? [] : s.task).map(id => idToCode[id]).filter(c => c && c !== senderCode),
+                  motivational: (s.motivationalNone ? [] : s.motivational).map(id => idToCode[id]).filter(c => c && c !== senderCode),
+                  social: (s.socialNone ? [] : s.social).map(id => idToCode[id]).filter(c => c && c !== senderCode),
+                  yseq: { ...s.yseq },
+                  submittedAt: ts,
+                  sha256: hash
+                }
+              };
+              persistState();
+              finalizeCompletion(true);
+            };
+
+            if (wave.responses && wave.responses[senderCode]) {
+              openConfirm(
+                "Respuesta duplicada detectada",
+                `${senderPlayer.displayName} ya tiene una respuesta registrada en ${wave.id}. ¿Deseas sobrescribirla con este nuevo cuestionario?`,
+                saveLocalResponse,
+                "Sobrescribir",
+                true
+              );
+              return;
+            }
+            saveLocalResponse();
+            return;
+          }
+
+          finalizeCompletion(false);
+        };
+      }
+
+      const btnCopyToken = document.getElementById("btn-copy-token");
+      if (btnCopyToken) {
+        btnCopyToken.onclick = () => {
+          copyTextSafely(AppState.surveySession.generatedToken);
+          showToast("Código de respuesta copiado al portapapeles.", "black");
+        };
+      }
+
+      const btnResetSurveySession = document.getElementById("btn-reset-survey-session");
+      if (btnResetSurveySession) {
+        btnResetSurveySession.onclick = () => {
+          AppState.surveySession = {
+            waveId: AppState.surveySession.waveId,
+            selectedPlayerId: "",
+            step: 0,
+            task: [],
+            taskNone: false,
+            motivational: [],
+            motivationalNone: false,
+            social: [],
+            socialNone: false,
+            yseq: {},
+            generatedToken: "",
+            receiptHash: "",
+            serverSynced: false
+          };
+          render();
+        };
+      }
+
+      // Pestaña 3: Sociogramas
+      document.querySelectorAll(".socio-node").forEach(node => {
+        node.onclick = () => {
+          const c = node.getAttribute("data-code");
+          AppState.selectedGraphNode = AppState.selectedGraphNode === c ? null : c;
+          render();
+        };
+      });
+
+      const btnClearNode = document.getElementById("btn-clear-graph-node");
+      if (btnClearNode) {
+        btnClearNode.onclick = () => {
+          AppState.selectedGraphNode = null;
+          render();
+        };
+      }
+
+      document.querySelectorAll("[data-graph-dl]").forEach(btn => {
+        btn.onclick = () => {
+          const [dimKey, fmt] = btn.getAttribute("data-graph-dl").split(":");
+          downloadSociogramFile(dimKey, fmt);
+        };
+      });
+
+      // Pestaña 4: Selectores longitudinales
+      const selLongA = document.getElementById("sel-long-a");
+      if (selLongA) {
+        selLongA.onchange = () => {
+          AppState.compareWaveAId = selLongA.value;
+          render();
+        };
+      }
+      const selLongB = document.getElementById("sel-long-b");
+      if (selLongB) {
+        selLongB.onchange = () => {
+          AppState.compareWaveBId = selLongB.value;
+          render();
+        };
+      }
+
+      // Pestaña 5: Sobre Cerrado Definitivo
+      const btnOpenEnvelope = document.getElementById("btn-open-sealed-envelope");
+      if (btnOpenEnvelope) {
+        btnOpenEnvelope.onclick = () => {
+          if (!canOpenSealedEnvelope()) {
+            showToast("Debes cerrar todas las oleadas del estudio antes de abrir el Sobre Cerrado.", "red");
+            return;
+          }
+          openConfirm(
+            "Abrir Sobre Cerrado Definitivo",
+            "Todas las oleadas están cerradas. ¿Confirmas la apertura definitiva del Sobre Cerrado para revelar los nombres reales junto a los códigos J01–J50 en todos los sociogramas y tablas?",
+            () => {
+              AppState.data.envelopeOpened = true;
+              persistState();
+              showToast("Sobre Cerrado abierto: los sociogramas y tablas muestran ahora nombres junto a códigos.", "black");
+              render();
+            },
+            "Abrir Sobre Cerrado",
+            true
+          );
+        };
+      }
+
+      // Pestaña 6: Configuración y Respaldo JSON
+      const formAppConfig = document.getElementById("form-app-config");
+      if (formAppConfig) {
+        formAppConfig.onsubmit = (e) => {
+          e.preventDefault();
+          const title = document.getElementById("cfg-title").value.trim();
+          const subtitle = document.getElementById("cfg-subtitle").value.trim();
+          const clubBadge = document.getElementById("cfg-badge").value.trim();
+          if (!title || !subtitle || !clubBadge) return;
+          AppState.data.config = { title, subtitle, clubBadge };
+          AppState.configDraft = { ...AppState.data.config };
+          persistState();
+          showToast("Configuración guardada y actualizada en el encabezado.", "black");
+          render();
+        };
+      }
+
+      const btnResetDefaultConfig = document.getElementById("btn-reset-default-config");
+      if (btnResetDefaultConfig) {
+        btnResetDefaultConfig.onclick = () => {
+          AppState.data.config = { ...DEFAULT_APP_CONFIG };
+          AppState.configDraft = { ...DEFAULT_APP_CONFIG };
+          persistState();
+          showToast("Valores por defecto restaurados.", "black");
+          render();
+        };
+      }
+
+      const btnBackup = document.getElementById("btn-backup-json");
+      if (btnBackup) {
+        btnBackup.onclick = () => {
+          downloadTextFile(
+            `Respaldo_TFG_Segre_U14_${new Date().toISOString().slice(0, 10)}.json`,
+            JSON.stringify(AppState.data, null, 2),
+            "application/json"
+          );
+          showToast("Respaldo JSON descargado correctamente.", "black");
+        };
+      }
+
+      const inpRestore = document.getElementById("inp-restore-json");
+      if (inpRestore) {
+        inpRestore.onchange = (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            try {
+              const parsed = JSON.parse(ev.target.result);
+              if (!Array.isArray(parsed.players) || !Array.isArray(parsed.waves)) {
+                showToast("Archivo JSON no válido.", "red");
+                return;
+              }
+              parsed.config = { ...DEFAULT_APP_CONFIG, ...(parsed.config || {}) };
+              AppState.data = parsed;
+              AppState.configDraft = { ...parsed.config };
+              persistState();
+              showToast("Estudio restaurado desde copia JSON.", "black");
+              render();
+            } catch (_) {
+              showToast("No se pudo leer el archivo JSON.", "red");
+            }
+          };
+          reader.readAsText(file);
+        };
+      }
+
+      // Toast y Modal
+      const btnToastClose = document.getElementById("btn-toast-close");
+      if (btnToastClose) btnToastClose.onclick = () => { AppState.toast = null; render(); };
+
+      const btnModalCancel = document.getElementById("btn-modal-cancel");
+      if (btnModalCancel) btnModalCancel.onclick = () => { AppState.confirmDialog = null; render(); };
+
+      const btnModalConfirm = document.getElementById("btn-modal-confirm");
+      if (btnModalConfirm) {
+        btnModalConfirm.onclick = () => {
+          const fn = AppState.confirmDialog?.onConfirm;
+          AppState.confirmDialog = null;
+          if (fn) fn();
+          render();
+        };
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
